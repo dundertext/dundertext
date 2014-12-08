@@ -1,4 +1,9 @@
-dundertext
+Dundertext
 ==========
 
-web based subtitle editor
+Web based subtitle editor
+
+
+Licence
+-------
+GNU General Public License GPLv3
