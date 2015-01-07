@@ -3,6 +3,9 @@ package dundertext.editor
 import scala.collection.mutable.ArrayBuffer
 
 class DocumentBuffer {
+
+  val entries = ArrayBuffer[DocumentNode]()
+
   def firstSubtitle: TextNode = entries(0).asInstanceOf[TextNode]
 
   def asText = {
@@ -12,11 +15,14 @@ class DocumentBuffer {
     sb.result()
   }
 
-  val entries = ArrayBuffer[DocumentNode]()
-
   def append(s: String): this.type = {
     val t = new TextNode
     t.append(s)
+    entries += t
+    this
+  }
+
+  def append(t: TextNode): this.type = {
     entries += t
     this
   }
@@ -42,6 +48,11 @@ object DocumentBuffer {
     val b = new DocumentBuffer
     b.append(txt)
     b.relink()
+    b
+  }
+
+  def empty = {
+    val b = new DocumentBuffer
     b
   }
 }

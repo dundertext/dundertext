@@ -1,5 +1,6 @@
 package dundertext.ui
 
+import dundertext.ui.editor.{EditorPanel, EditorPresenter}
 import dundertext.ui.keyboard.GlobalKeyboardHandler
 import dundertext.ui.video.{VideoPlayerPresenter, VideoPlayerPanel}
 import org.scalajs.dom.HTMLElement
@@ -22,5 +23,8 @@ object DundertextJsApp extends JSApp {
     val playerPanel = new VideoPlayerPanel(dom.document.querySelector("#videos section").asInstanceOf[HTMLElement])
     val keyboard = new GlobalKeyboardHandler
     new VideoPlayerPresenter(keyboard, playerPanel)
+
+    val editorPanel = new EditorPanel(dom.document.querySelector("#editor").asInstanceOf[HTMLElement])
+    new EditorPresenter(keyboard, editorPanel)
   }
 }

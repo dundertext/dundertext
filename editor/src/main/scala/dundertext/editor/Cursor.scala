@@ -5,9 +5,21 @@ class Cursor {
   var row: RowNode = _
   var pos: Int = 0
 
+  def isAtText: Boolean =
+    text ne null
+
   def moveTo(t: TextNode): Unit = {
     text = t
     row = t.firstRow
+    pos = 0
+  }
+
+  def moveRight(d: Int): Unit = {
+    pos += d
+  }
+
+  def moveLeft(d: Int): Unit = {
+    pos -= d
   }
 
   def moveRowEnd(): Unit = {

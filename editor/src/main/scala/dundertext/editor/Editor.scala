@@ -21,7 +21,7 @@ object Editor {
   def apply(b: DocumentBuffer) = {
     val e = new Editor
     e.buffer = b
-    e.focusBeginning()
+    //e.focusBeginning()
     e
   }
 }

@@ -9,6 +9,7 @@ abstract class SubtitlingCommand {
   def execute(): Unit
 
   def cursor = editor.cursor
+  def buffer = editor.buffer
 
   def link(editor: Editor, player: Player) = {
     this.editor = editor
