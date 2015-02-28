@@ -6,6 +6,7 @@ abstract class SubtitlingCommand {
   protected var editor: Editor = _
   protected var player: Player = _
 
+  def applies: Boolean = true
   def execute(): Unit
 
   def cursor = editor.cursor

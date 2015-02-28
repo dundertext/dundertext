@@ -3,6 +3,7 @@ package dundertext.editor
 import dundertext.data.Span
 
 class SpanNode {
+  var parent: RowNode = _
   var prev: SpanNode = _
   var next: SpanNode = _
   var start: Int = _
@@ -29,5 +30,4 @@ object SpanNode {
     r.text.append(span.text)
     r
   }
-
 }

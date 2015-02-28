@@ -8,12 +8,14 @@ class TextNode extends DocumentNode {
 
   val rows = mutable.Buffer[RowNode]()
 
-  def firstRow: RowNode = rows(0)
+  def firstRow: RowNode = rows.head
+  def lastRow: RowNode = rows.last
 
   def rowCount = rows.length
 
   def append(s: String): this.type = {
     rows.append(RowNode.from(Row(List(Span(s)))))
+    relink()
     this
   }
 
@@ -45,5 +47,13 @@ class TextNode extends DocumentNode {
     val sb = new StringBuilder
     asText(sb)
     sb.result()
+  }
+}
+
+object TextNode {
+  def empty = {
+    val n = new TextNode
+    n.append("")
+    n
   }
 }

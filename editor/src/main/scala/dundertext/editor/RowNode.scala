@@ -1,6 +1,6 @@
 package dundertext.editor
 
-import dundertext.data.{Row, Span}
+import dundertext.data.Row
 
 import scala.collection.mutable
 
@@ -10,6 +10,9 @@ class RowNode {
   var next: RowNode = _
 
   var spans = mutable.Buffer[SpanNode]()
+
+  def length: Int = spans.map(_.length).sum
+  def hasText: Boolean = length > 0
 
   def insert(pos: Int, text: String): Unit = {
     val s = spans.find(_.containsPos(pos)) getOrElse spans.last
@@ -24,6 +27,7 @@ class RowNode {
   def relink(): Unit = {
     var p = 0
     for (s <- spans) {
+      s.parent = this
       s.start = p
       p = p + s.length
       s.end = p

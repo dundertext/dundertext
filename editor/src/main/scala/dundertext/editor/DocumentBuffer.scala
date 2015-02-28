@@ -19,11 +19,13 @@ class DocumentBuffer {
     val t = new TextNode
     t.append(s)
     entries += t
+    relink()
     this
   }
 
   def append(t: TextNode): this.type = {
     entries += t
+    relink()
     this
   }
 

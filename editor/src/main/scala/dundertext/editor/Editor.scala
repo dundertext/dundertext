@@ -9,7 +9,8 @@ class Editor {
 
   def execute(cmd: SubtitlingCommand): Unit = {
     cmd.link(this, player)
-    cmd.execute()
+    if (cmd.applies)
+      cmd.execute()
   }
 
   def focusBeginning(): Unit = {
