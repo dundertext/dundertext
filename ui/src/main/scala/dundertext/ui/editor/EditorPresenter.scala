@@ -3,7 +3,7 @@ package dundertext.ui.editor
 import dundertext.editor.cmd.{AddRow, DeleteChar, TypeText, NewText}
 import dundertext.editor.{DocumentBuffer, Editor}
 import dundertext.ui.keyboard.{Keyboard, KeyboardListener}
-import org.scalajs.dom.extensions.KeyCode
+import org.scalajs.dom.ext.KeyCode
 
 class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardListener {
 

@@ -1,9 +1,9 @@
 package dundertext.ui.video
 
-import org.scalajs.dom.HTMLVideoElement
+import org.scalajs.dom.html
 import dundertext.data._
 
-class VideoPlayer(e: HTMLVideoElement) {
+class VideoPlayer(e: html.Video) {
   def isPaused: Boolean = e.paused
   def currentTime: Time = Time.fromSeconds(e.currentTime)
 

@@ -1,10 +1,10 @@
-scalaJSSettings
+enablePlugins(ScalaJSPlugin)
 
-ScalaJSKeys.persistLauncher := true
+//ScalaJSKeys.persistLauncher := true
+//
+//ScalaJSKeys.persistLauncher in Test := false
 
-ScalaJSKeys.persistLauncher in Test := false
-
-libraryDependencies += "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6"
+libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
 
 unmanagedSourceDirectories in Compile += baseDirectory.value / "../data/src/main/scala"
 
