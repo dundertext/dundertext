@@ -1,6 +1,7 @@
 package dundertext.editor
 
 class Cursor {
+
   var text: TextNode = _
   var row: RowNode = _
   var pos: Int = 0
@@ -11,6 +12,12 @@ class Cursor {
   def moveTo(t: TextNode): Unit = {
     text = t
     row = t.firstRow
+    pos = 0
+  }
+
+  def moveTo(r: RowNode): Unit = {
+    row = r
+    text = r.parent
     pos = 0
   }
 

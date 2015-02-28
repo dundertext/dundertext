@@ -1,10 +1,10 @@
 package dundertext.editor
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 class DocumentBuffer {
 
-  val entries = ArrayBuffer[DocumentNode]()
+  val entries = mutable.Buffer[DocumentNode]()
 
   def firstSubtitle: TextNode = entries(0).asInstanceOf[TextNode]
 

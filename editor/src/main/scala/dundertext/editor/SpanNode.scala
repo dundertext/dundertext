@@ -16,6 +16,10 @@ class SpanNode {
     text.insert(pos - start, t)
   }
 
+  def delete(pos: Int): Unit = {
+    text.deleteCharAt(pos)
+  }
+
   def length: Int = text.length
 }
 

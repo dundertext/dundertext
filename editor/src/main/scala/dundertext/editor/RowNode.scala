@@ -2,14 +2,23 @@ package dundertext.editor
 
 import dundertext.data.{Row, Span}
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 class RowNode {
-  var spans = ArrayBuffer[SpanNode]()
+  var parent: TextNode = _
+  var prev: RowNode = _
+  var next: RowNode = _
+
+  var spans = mutable.Buffer[SpanNode]()
 
   def insert(pos: Int, text: String): Unit = {
     val s = spans.find(_.containsPos(pos)) getOrElse spans.last
     s.insert(pos, text)
+  }
+
+  def delete(pos: Int): Unit = {
+    val s = spans.find(_.containsPos(pos)) getOrElse spans.last
+    s.delete(pos)
   }
 
   def relink(): Unit = {

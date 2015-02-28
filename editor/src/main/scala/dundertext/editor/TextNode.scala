@@ -2,11 +2,11 @@ package dundertext.editor
 
 import dundertext.data.{Span, Row}
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 class TextNode extends DocumentNode {
 
-  val rows = ArrayBuffer[RowNode]()
+  val rows = mutable.Buffer[RowNode]()
 
   def firstRow: RowNode = rows(0)
 
@@ -15,6 +15,23 @@ class TextNode extends DocumentNode {
   def append(s: String): this.type = {
     rows.append(RowNode.from(Row(List(Span(s)))))
     this
+  }
+
+  def insertRow(prevRow: RowNode, newRow: RowNode): Unit = {
+    val pos = rows.indexOf(prevRow)
+    rows.insert(pos + 1, newRow)
+    relink()
+  }
+
+  def relink(): Unit = {
+    var prev: RowNode = null
+    for (r <- rows) {
+      r.parent = this
+      if (prev ne null)
+        prev.next = r
+      r.prev = prev
+      prev = r
+    }
   }
 
   override def asText(sb: StringBuilder): Unit = {
