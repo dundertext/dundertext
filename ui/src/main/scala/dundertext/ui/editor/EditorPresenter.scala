@@ -10,7 +10,7 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardLi
   keyboard.listen(this)
   val editor = Editor(DocumentBuffer.empty)
 
-  panel.display("TJOHO: ")
+  panel.display("Editor")
 
   override def onKeyPress(char: Char): Boolean = {
     if (!editor.cursor.isAtText)

@@ -4,6 +4,8 @@ import org.scalajs.dom.html
 import dundertext.data._
 
 class VideoPlayer(e: html.Video) {
+  e.src = "../../../videos/example.webm"
+
   def isPaused: Boolean = e.paused
   def currentTime: Time = Time.fromSeconds(e.currentTime)
 

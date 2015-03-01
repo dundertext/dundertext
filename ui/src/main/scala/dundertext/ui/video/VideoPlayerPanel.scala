@@ -1,9 +1,12 @@
 package dundertext.ui.video
 
 import org.scalajs.dom.html
+import org.scalajs.dom
 
 class VideoPlayerPanel(e: html.Element) {
-  val player = new VideoPlayer(e.getElementsByTagName("video")(0).asInstanceOf[html.Video])
+  val video: html.Video = e.appendChild(dom.document.createElement("video")).asInstanceOf
+  val time: html.Element = e.appendChild(dom.document.createElement("time")).asInstanceOf
+
+  val player = new VideoPlayer(video)
   //val svg = new SvgSubtitle(e.getElementsByTagName("svg")(0).asInstanceOf[SVGElement])
-  val time = e.getElementsByTagName("time")(0).asInstanceOf[html.Element]
 }

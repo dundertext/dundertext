@@ -1,0 +1,126 @@
+html {
+    background-color: #3e3d32;
+}
+
+body {
+    margin: 0px;
+    font-family: Helvetica;
+    font-size: 10px;
+    color: #999;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 0px;
+}
+
+input {
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+#videos table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#videos td {
+    padding-right: 20px;
+}
+
+#videos section {
+    background-color: #272822;
+    padding: 5px 10px 5px 10px;
+    opacity: 0.6;
+}
+
+#videos section.active {
+    opacity: 1.0;
+}
+
+#videos video {
+    width: 640px;
+    height: 360px;
+    background: black;
+}
+
+#videos time {
+    padding-left: 3px;
+    font-size: 12px;
+    display: block;
+}
+
+#timelines {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    height: 70px;
+}
+#timeline {
+/*    width: 100%;*/
+
+}
+
+#editors {
+    margin: 10px;
+}
+
+#editors table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#editors tr {
+    vertical-align: top;
+}
+
+#editors td {
+    width: 400px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#editors pre {
+    background-color: #272822;
+    padding: 10px;
+    color: #eff8f2;
+}
+
+.dt-editor pre:focus {
+    outline: none;
+}
+
+.dt-editor .styleclass {
+    color: #a4de0d;
+}
+
+.dt-editor .timecode {
+    color: #ead86d;
+}
+
+.dt-editor .other {
+    color: #fb3353;
+}
+
+.dt-editor .id {
+    color: #8f908a;
+}
+
+.border {
+    color: #3c3d38;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 20px;
+    background-color: #171812;
+    border-top: 1px solid #4e4d42;
+}
+
+footer .version {
+    padding: 4px 10px 0px 10px;
+    display: inline-block;
+}
