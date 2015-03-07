@@ -8,17 +8,19 @@ class SpanNode {
   var next: SpanNode = _
   var start: Int = _
   var end: Int = _
-  val text = new StringBuilder
+  var text = ""
 
   def containsPos(pos: Int): Boolean =
     start <= pos && pos < end
 
   def insert(pos: Int, t: String): Unit = {
-    text.insert(pos - start, t)
+    val sb = new StringBuilder(text)
+    text = sb.insert(pos - start, t).result()
   }
 
   def delete(pos: Int): Unit = {
-    text.deleteCharAt(pos)
+    val sb = new StringBuilder(text)
+    text = sb.deleteCharAt(pos).result()
   }
 
   def length: Int = text.length
@@ -27,7 +29,7 @@ class SpanNode {
 object SpanNode {
   def from(span: Span) = {
     val r = new SpanNode
-    r.text.append(span.text)
+    r.text = span.text
     r
   }
 }
