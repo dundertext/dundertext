@@ -8,6 +8,7 @@ class RowNode {
   var parent: TextNode = _
   var prev: RowNode = _
   var next: RowNode = _
+  var nr: Int = _
 
   var spans = mutable.Buffer[SpanNode]()
 

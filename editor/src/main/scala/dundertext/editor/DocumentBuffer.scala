@@ -7,6 +7,7 @@ class DocumentBuffer {
   val entries = mutable.Buffer[DocumentNode]()
 
   def firstSubtitle: TextNode = entries(0).asInstanceOf[TextNode]
+  def lastSubtitle: TextNode = entries.last.asInstanceOf[TextNode]
 
   def asText = {
     val sb = new StringBuilder
@@ -31,7 +32,14 @@ class DocumentBuffer {
 
   def relink(): Unit = {
     var prev: DocumentNode = null
+    var count = 0
     for (e <- entries) {
+      e match {
+        case t: TextNode =>
+          count += 1
+          t.nr = count
+        case _ =>
+      }
       if (prev ne null)
         prev.next = e
       e.prev = prev

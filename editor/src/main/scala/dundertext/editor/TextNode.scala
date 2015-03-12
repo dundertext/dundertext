@@ -5,6 +5,7 @@ import dundertext.data.{Span, Row}
 import scala.collection.mutable
 
 class TextNode extends DocumentNode {
+  var nr: Int = _
 
   val rows = mutable.Buffer[RowNode]()
 
@@ -27,8 +28,11 @@ class TextNode extends DocumentNode {
 
   def relink(): Unit = {
     var prev: RowNode = null
+    var count = 0
     for (r <- rows) {
+      count += 1
       r.parent = this
+      r.nr = count
       if (prev ne null)
         prev.next = r
       r.prev = prev

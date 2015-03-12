@@ -18,4 +18,19 @@ abstract class CommandTestBase {
     editor.focusBeginning()
     editor
   }
+
+  def given(document: String): Editor = {
+    val buffer = DocumentBuffer.empty
+    val editor = Editor(buffer)
+
+    for (line <- document.stripMargin.trim.lines.map(_.trim)) {
+      val cursor = line.indexOf('╎')
+      buffer.append(line.replace("╎",""))
+      if (cursor != -1) {
+        editor.cursor.moveTo(buffer.lastSubtitle.lastRow, cursor)
+      }
+    }
+
+    editor
+  }
 }

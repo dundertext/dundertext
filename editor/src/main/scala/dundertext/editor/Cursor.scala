@@ -4,6 +4,9 @@ class Cursor {
   def isAtBeginningOfRow: Boolean =
     pos == 0
 
+  def isAtEndOfRow: Boolean =
+    pos == row.length
+
   var text: TextNode = _
   var row: RowNode = _
   var span: SpanNode = _
@@ -19,11 +22,11 @@ class Cursor {
     pos = 0
   }
 
-  def moveTo(r: RowNode): Unit = {
+  def moveTo(r: RowNode, p: Int = 0): Unit = {
     row = r
     text = r.parent
     span = row.spans.head
-    pos = 0
+    pos = p
   }
 
   def moveRight(d: Int): Unit = {
@@ -36,5 +39,9 @@ class Cursor {
 
   def moveRowEnd(): Unit = {
     pos = row.spans.last.end
+  }
+
+  override def toString: String = {
+    text.nr + "/" + row.nr + "/" + pos
   }
 }

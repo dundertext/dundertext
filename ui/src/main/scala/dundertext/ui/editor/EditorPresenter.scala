@@ -26,19 +26,16 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardLi
   }
 
   def redraw(): Unit = {
-    val f = new EditorHtmlFormatter(editor)
     def html = new EditorHtmlFormatter(editor).format()
     panel.display(html)
     placeEditorCursor()
+    dom.document.getElementById("status").textContent = editor.cursor.toString
   }
 
   def placeEditorCursor(): Unit = {
     panel.focus()
     val selection: Selection = dom.window.getSelection()
-    println(selection)
     val cs: html.Span = panel.cursorSpan
-    println("Pre:" + panel.pre)
-    println("Cursor:" + cs)
     selection.collapse(cs.firstChild, editor.cursor.pos)
   }
 
@@ -50,16 +47,16 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardLi
       case KeyCode.backspace => editor.execute(new DeleteChar)
                              true
 
-      case KeyCode.left => editor.execute(new CursorLeft)
+      case KeyCode.left => editor.execute(new MoveCursor.Left)
                              true
 
-      case KeyCode.right => editor.execute(new CursorRight)
+      case KeyCode.right => editor.execute(new MoveCursor.Right)
                              true
 
-      case KeyCode.up => editor.execute(new CursorUp)
+      case KeyCode.up => editor.execute(new MoveCursor.Up)
                              true
 
-      case KeyCode.down => editor.execute(new CursorDown)
+      case KeyCode.down => editor.execute(new MoveCursor.Down)
                              true
 
       case KeyCode.space => editor.execute(new Space)

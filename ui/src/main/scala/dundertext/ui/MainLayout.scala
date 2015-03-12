@@ -35,7 +35,8 @@ object MainLayout {
         footer (
             span(cls:="version",
                 "Dundertext v 0.2"
-            )
+            ),
+            span(id:="status", "Started")
         )
     )
 }
