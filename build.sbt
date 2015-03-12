@@ -15,3 +15,6 @@ lazy val `editor` = project.dependsOn(`data`)
 lazy val `ui` = project.dependsOn(`editor`)
 
 incOptions := incOptions.value.withNameHashing(true)
+
+testOptions in ThisBuild += Tests.Argument(TestFrameworks.JUnit, "+q", "-v")
+
