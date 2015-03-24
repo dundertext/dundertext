@@ -3,16 +3,15 @@ package dundertext.ui.editor
 import dundertext.editor.cmd._
 import dundertext.editor.{DocumentBuffer, Editor}
 import dundertext.ui.keyboard.{Keyboard, KeyboardListener}
-import org.scalajs.dom.ext.KeyCode
+import dundertext.ui.svg.SvgDisplay
 import org.scalajs.dom
+import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
-import org.scalajs.dom.raw.{Node, Selection}
+import org.scalajs.dom.raw.Selection
 
-class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardListener {
-
+class EditorPresenter(keyboard: Keyboard, panel: EditorPanel, svgDisplay: SvgDisplay) extends KeyboardListener {
   keyboard.listen(this)
   val editor = Editor(DocumentBuffer.empty)
-
   panel.display("Editor")
 
   override def onKeyPress(char: Char): Boolean = {
@@ -30,6 +29,7 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardLi
     panel.display(html)
     placeEditorCursor()
     dom.document.getElementById("status").textContent = editor.cursor.toString
+    svgDisplay.display(editor.cursor.row.text, "", editor.cursor.pos)
   }
 
   def placeEditorCursor(): Unit = {
@@ -39,30 +39,18 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel) extends KeyboardLi
     selection.collapse(cs.firstChild, editor.cursor.pos)
   }
 
-  override def onKeyDown(code: Int) = {
+  override def onKeyDown(code: Int): Boolean = {
     val handled = code match {
-      case KeyCode.enter  => editor.execute(new AddRow)
-                             true
+      case KeyCode.enter     => editor.execute(new AddRow); true
+      case KeyCode.backspace => editor.execute(new DeleteChar); true
+      case KeyCode.left      => editor.execute(new MoveCursor.Left); true
+      case KeyCode.right     => editor.execute(new MoveCursor.Right); true
+      case KeyCode.up        => editor.execute(new MoveCursor.Up); true
+      case KeyCode.down      => editor.execute(new MoveCursor.Down); true
+      case KeyCode.space     => editor.execute(new Space); true
+      case KeyCode.home      => editor.execute(new MoveCursor.RowBegin); true
 
-      case KeyCode.backspace => editor.execute(new DeleteChar)
-                             true
-
-      case KeyCode.left => editor.execute(new MoveCursor.Left)
-                             true
-
-      case KeyCode.right => editor.execute(new MoveCursor.Right)
-                             true
-
-      case KeyCode.up => editor.execute(new MoveCursor.Up)
-                             true
-
-      case KeyCode.down => editor.execute(new MoveCursor.Down)
-                             true
-
-      case KeyCode.space => editor.execute(new Space)
-                             true
-
-      case _              => false
+      case _ => false
     }
 
     if (handled)

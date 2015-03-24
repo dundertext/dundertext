@@ -35,6 +35,12 @@ class RowNode {
     }
   }
 
+  def text: String = {
+    val sb = new StringBuilder()
+    asText(sb)
+    sb.result()
+  }
+
   def asText(sb: StringBuilder): Unit = {
     for (s <- spans)
       sb.append(s.text)

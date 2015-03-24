@@ -18,6 +18,6 @@ object DundertextJsApp extends JSApp {
     new VideoPlayerPresenter(keyboard, videosPanel.left)
 
     val editorsPanel = new EditorsPanel(dom.document.querySelector("#editors tr").asInstanceOf)
-    new EditorPresenter(keyboard, editorsPanel.left)
+    new EditorPresenter(keyboard, editorsPanel.left, videosPanel.left.display)
   }
 }

@@ -11,6 +11,15 @@ object MoveCursor {
     }
   }
 
+  class RowBegin extends SubtitlingCommand {
+    override def applies: Boolean =
+      !cursor.isAtBeginningOfRow
+
+    override def execute(): Unit = {
+      cursor.moveTo(cursor.row)
+    }
+  }
+
   class Right extends SubtitlingCommand {
     override def applies: Boolean =
       !cursor.isAtEndOfRow

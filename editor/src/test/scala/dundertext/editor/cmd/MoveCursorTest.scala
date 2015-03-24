@@ -64,5 +64,18 @@ class MoveCursorTest extends CommandTestBase {
     assertEquals("1/1/34", editor.cursor.toString)
   }
 
+  @Test
+  def should_move_to_beginning_of_row: Unit = {
+    val editor = given("""
+      Det här är en undertext på ╎en rad.
+    """)
+    assertEquals("1/1/27", editor.cursor.toString)
 
+    // when
+    def cmd = new MoveCursor.RowBegin
+    editor.execute(cmd)
+
+    // then
+    assertEquals("1/1/0", editor.cursor.toString)
+  }
 }
