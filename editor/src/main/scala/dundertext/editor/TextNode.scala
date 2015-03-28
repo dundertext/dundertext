@@ -41,10 +41,10 @@ class TextNode extends DocumentNode {
   }
 
   override def asText(sb: StringBuilder): Unit = {
-    for (r <- rows)
+    for (r <- rows) {
       r.asText(sb)
-
-    sb.append('\n')
+      sb.append('\n')
+    }
   }
 
   def text: String = {

@@ -44,8 +44,6 @@ class RowNode {
   def asText(sb: StringBuilder): Unit = {
     for (s <- spans)
       sb.append(s.text)
-
-    sb.append('\n')
   }
 }
 

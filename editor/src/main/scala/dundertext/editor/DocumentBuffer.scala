@@ -11,8 +11,10 @@ class DocumentBuffer {
 
   def asText = {
     val sb = new StringBuilder
-    for (e <- entries)
+    for (e <- entries) {
       e.asText(sb)
+      sb.append('\n')
+    }
     sb.result()
   }
 

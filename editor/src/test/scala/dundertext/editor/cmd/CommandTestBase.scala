@@ -33,4 +33,10 @@ abstract class CommandTestBase {
 
     editor
   }
+
+  def assertRow(expected: String)(implicit editor: Editor): Unit = {
+    val actual = new StringBuilder(editor.cursor.row.text)
+    actual.insert(editor.cursor.pos, '╎')
+    assertEquals(expected, actual.result())
+  }
 }
