@@ -4,6 +4,7 @@ import dundertext.ui.editor.{EditorPresenter, EditorsPanel}
 import dundertext.ui.keyboard.GlobalKeyboardHandler
 import dundertext.ui.video.{VideoPlayerPresenter, VideosPanel}
 import org.scalajs.dom
+import org.scalajs.dom.html
 
 import scala.scalajs.js.JSApp
 
@@ -13,11 +14,11 @@ object DundertextJsApp extends JSApp {
 
     dom.document.body.innerHTML = MainLayout.page.render
 
-    val videosPanel = new VideosPanel(dom.document.querySelector("#videos tr").asInstanceOf)
+    val videosPanel = new VideosPanel(dom.document.querySelector("#videos tr").asInstanceOf[html.TableRow])
     val keyboard = new GlobalKeyboardHandler
     new VideoPlayerPresenter(keyboard, videosPanel.left)
 
-    val editorsPanel = new EditorsPanel(dom.document.querySelector("#editors tr").asInstanceOf)
-    new EditorPresenter(keyboard, editorsPanel.left, videosPanel.left.display)
+    val editorsPanel = new EditorsPanel(dom.document.querySelector("#editors tr").asInstanceOf[html.TableRow])
+    new EditorPresenter(keyboard, editorsPanel.left, videosPanel.left.display, videosPanel.left.player)
   }
 }

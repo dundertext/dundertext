@@ -1,6 +1,7 @@
 package dundertext.editor.cmd
 
-import dundertext.editor.{DocumentBuffer, Editor}
+import dundertext.data.Time
+import dundertext.editor.{TimingNode, TextNode, DocumentBuffer, Editor}
 import org.junit.Assert._
 
 abstract class CommandTestBase {
@@ -23,11 +24,23 @@ abstract class CommandTestBase {
     val buffer = DocumentBuffer.empty
     val editor = Editor(buffer)
 
+    var textNode = new TextNode
+    buffer.append(textNode)
+
     for (line <- document.stripMargin.trim.lines.map(_.trim)) {
-      val cursor = line.indexOf('╎')
-      buffer.append(line.replace("╎",""))
-      if (cursor != -1) {
-        editor.cursor.moveTo(buffer.lastSubtitle.lastRow, cursor)
+      if (line.isEmpty && textNode.hasText) {
+        textNode = new TextNode
+        buffer.append(textNode)
+      } else if (line.charAt(0).isDigit) {
+        buffer.append(TimingNode(Time(line.toInt)))
+        textNode = new TextNode
+        buffer.append(textNode)
+      } else {
+        val cursor = line.indexOf('╎')
+        textNode.append(line.replace("╎",""))
+        if (cursor != -1) {
+          editor.cursor.moveTo(buffer.lastSubtitle.lastRow, cursor)
+        }
       }
     }
 

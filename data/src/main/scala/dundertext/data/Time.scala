@@ -2,6 +2,9 @@ package dundertext.data
 
 final case class Time(millis: Int) {
 
+  def isBefore(that: Time): Boolean = this.millis < that.millis
+  def isAfter(that: Time): Boolean = this.millis > that.millis
+
   def parts: (Int, Int, Int, Int) = {
     val ms = millis % 1000
     val seconds = (millis / 1000) % 60

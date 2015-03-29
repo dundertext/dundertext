@@ -52,6 +52,10 @@ class TextNode extends DocumentNode {
     asText(sb)
     sb.result()
   }
+
+  def hasText: Boolean = {
+    rows.exists(_.hasText)
+  }
 }
 
 object TextNode {

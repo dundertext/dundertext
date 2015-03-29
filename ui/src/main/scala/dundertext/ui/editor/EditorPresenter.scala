@@ -1,7 +1,7 @@
 package dundertext.ui.editor
 
 import dundertext.editor.cmd._
-import dundertext.editor.{DocumentBuffer, Editor}
+import dundertext.editor.{Player, DocumentBuffer, Editor}
 import dundertext.ui.keyboard.{Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
 import org.scalajs.dom
@@ -9,14 +9,21 @@ import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
 import org.scalajs.dom.raw.Selection
 
-class EditorPresenter(keyboard: Keyboard, panel: EditorPanel, svgDisplay: SvgDisplay) extends KeyboardListener {
+class EditorPresenter(
+    keyboard: Keyboard,
+    panel: EditorPanel,
+    svgDisplay: SvgDisplay,
+    player: Player
+) extends KeyboardListener {
+
   keyboard.listen(this)
   val editor = Editor(DocumentBuffer.empty)
+  editor.player = player
   panel.display("Editor")
 
   override def onKeyPress(char: Char): Boolean = {
     if (!editor.cursor.isAtText)
-      editor.execute(new NewText)
+      editor.execute(new NewTextAtVideo)
 
     editor.execute(new TypeText(char.toString))
     redraw()
@@ -27,9 +34,14 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel, svgDisplay: SvgDis
   def redraw(): Unit = {
     def html = new EditorHtmlFormatter(editor).format()
     panel.display(html)
-    placeEditorCursor()
+    if (editor.cursor.isAtText) {
+      placeEditorCursor()
+      svgDisplay.display(editor.cursor.row.text, "", editor.cursor.pos)
+    } else {
+      svgDisplay.display("", "", 0)
+    }
+
     dom.document.getElementById("status").textContent = editor.cursor.toString
-    svgDisplay.display(editor.cursor.row.text, "", editor.cursor.pos)
   }
 
   def placeEditorCursor(): Unit = {
@@ -49,6 +61,7 @@ class EditorPresenter(keyboard: Keyboard, panel: EditorPanel, svgDisplay: SvgDis
       case KeyCode.down      => editor.execute(new MoveCursor.Down); true
       case KeyCode.space     => editor.execute(new Space); true
       case KeyCode.home      => editor.execute(new MoveCursor.RowBegin); true
+      case KeyCode.escape    => editor.execute(new BlurCursor); true
 
       case _ => false
     }

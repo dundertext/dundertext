@@ -1,12 +1,17 @@
 package dundertext.editor
 
+import dundertext.data.Time
+
+import scala.annotation.tailrec
 import scala.collection.mutable
 
 class DocumentBuffer {
-
   val entries = mutable.Buffer[DocumentNode]()
 
-  def firstSubtitle: TextNode = entries(0).asInstanceOf[TextNode]
+  def firstSubtitle: TextNode = (entries collectFirst {
+    case n: TextNode => n
+  }).get
+
   def lastSubtitle: TextNode = entries.last.asInstanceOf[TextNode]
 
   def asText = {
@@ -26,7 +31,7 @@ class DocumentBuffer {
     this
   }
 
-  def append(t: TextNode): this.type = {
+  def append(t: DocumentNode): this.type = {
     entries += t
     relink()
     this
@@ -51,6 +56,15 @@ class DocumentBuffer {
 
   def length: Int =
     entries.length
+
+  def findNodeAt(time: Time): TextNode = {
+    @tailrec def findAfter(n: DocumentNode): TimingNode = n match {
+      case tn: TimingNode if tn.time.isAfter(time) => tn
+      case _ => findAfter(n.next)
+    }
+    val after = findAfter(entries.head)
+    after.prev.asInstanceOf[TextNode]
+  }
 
   override def toString = asText
 }

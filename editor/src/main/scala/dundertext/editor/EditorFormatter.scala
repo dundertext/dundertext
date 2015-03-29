@@ -11,6 +11,7 @@ class EditorFormatter(editor: Editor) {
 
   def format(node: DocumentNode): Unit = node match {
     case n: TextNode => format(n)
+    case n: TimingNode => format(n)
     case _ =>
   }
 
@@ -21,7 +22,13 @@ class EditorFormatter(editor: Editor) {
     sb.append('\n')
   }
 
+  def format(timing: TimingNode) {
+    sb.append(timing.time.formatShort)
+    sb.append('\n')
+  }
+
   def row(row: RowNode): Unit = {
+    sb.append("  ")
     for (s <- row.spans) {
       span(s)
     }
@@ -29,7 +36,7 @@ class EditorFormatter(editor: Editor) {
   }
 
   def span(span: SpanNode): Unit = {
-    if (editor.cursor.span == span)
+    if (span == editor.cursor.span)
       writeTextAtCursor(span.text, editor.cursor.pos)
     else
       writeText(span.text)

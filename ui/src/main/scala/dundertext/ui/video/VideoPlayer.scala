@@ -3,7 +3,7 @@ package dundertext.ui.video
 import org.scalajs.dom.html
 import dundertext.data._
 
-class VideoPlayer(e: html.Video) {
+class VideoPlayer(e: html.Video) extends dundertext.editor.Player {
   e.src = "../../../videos/example.webm"
   e.play()
 

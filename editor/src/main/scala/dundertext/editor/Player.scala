@@ -1,5 +1,7 @@
 package dundertext.editor
 
-trait Player {
+import dundertext.data.Time
 
+trait Player {
+  def currentTime: Time
 }

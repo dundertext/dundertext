@@ -4,7 +4,7 @@ import org.scalajs.dom.html
 import org.scalajs.dom
 
 class EditorPanel(e: html.Element) {
-  val pre: html.Pre = e.appendChild(dom.document.createElement("pre")).asInstanceOf
+  val pre: html.Pre = e.appendChild(dom.document.createElement("pre")).asInstanceOf[html.Pre]
   pre.contentEditable = "true"
 
   def display(document: String): Unit =

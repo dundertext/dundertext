@@ -1,16 +1,23 @@
 package dundertext.editor
 
 class Cursor {
+  var text: TextNode = _
+  var row: RowNode = _
+  var span: SpanNode = _
+  var pos: Int = 0
+
+  def blur(): Unit = {
+    text = null
+    row = null
+    span = null
+    pos = 0
+  }
+
   def isAtBeginningOfRow: Boolean =
     pos == 0
 
   def isAtEndOfRow: Boolean =
     pos == row.length
-
-  var text: TextNode = _
-  var row: RowNode = _
-  var span: SpanNode = _
-  var pos: Int = 0
 
   def isAtText: Boolean =
     text ne null

@@ -16,6 +16,11 @@ class Editor {
   def focusBeginning(): Unit = {
     cursor.moveTo(buffer.firstSubtitle)
   }
+
+  def placeCursorAtVideo(): Unit = {
+    val textNode = buffer.findNodeAt(player.currentTime)
+    cursor.moveTo(textNode)
+  }
 }
 
 object Editor {
