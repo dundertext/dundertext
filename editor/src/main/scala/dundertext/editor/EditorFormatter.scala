@@ -15,14 +15,14 @@ class EditorFormatter(editor: Editor) {
     case _ =>
   }
 
-  def format(text: TextNode) {
+  def format(text: TextNode): Unit = {
     for (r <- text.rows) {
       row(r)
     }
     sb.append('\n')
   }
 
-  def format(timing: TimingNode) {
+  def format(timing: TimingNode): Unit = {
     sb.append(timing.time.formatShort)
     sb.append('\n')
   }

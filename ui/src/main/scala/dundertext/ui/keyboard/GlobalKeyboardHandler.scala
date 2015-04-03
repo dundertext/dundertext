@@ -10,16 +10,14 @@ class GlobalKeyboardHandler extends Keyboard {
   var listeners: Set[KeyboardListener] = Set.empty
 
   def onKeyDown(e: KeyboardEvent): Unit = {
-    println("keydown: code")
-    println(e.keyCode)
+    val chord = KeyChord(e.keyCode)
     for (l <- listeners) {
-      val handled = l.onKeyDown(e.keyCode)
+      val handled = l.onKeyDown(chord)
       if (handled) e.preventDefault()
     }
   }
 
   def onKeyPress(e: KeyboardEvent): Unit = {
-    println("keypress: " + e.keyCode.toChar)
     for (l <- listeners) {
       val handled = l.onKeyPress(e.keyCode.toChar)
       if (handled) e.preventDefault()

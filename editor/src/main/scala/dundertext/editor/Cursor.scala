@@ -45,10 +45,14 @@ class Cursor {
   }
 
   def moveRowEnd(): Unit = {
+    span = row.spans.last
     pos = row.spans.last.end
   }
 
   override def toString: String = {
-    text.nr + "/" + row.nr + "/" + pos
+    if (isAtText)
+      text.nr + "/" + row.nr + "/" + pos
+    else
+      ""
   }
 }

@@ -17,3 +17,8 @@ abstract class SubtitlingCommand {
     this.player = player
   }
 }
+
+trait CommandDescription {
+  def apply(): SubtitlingCommand
+  def description: String = ""
+}

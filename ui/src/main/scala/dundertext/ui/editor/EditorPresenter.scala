@@ -2,7 +2,7 @@ package dundertext.ui.editor
 
 import dundertext.editor.cmd._
 import dundertext.editor.{Player, DocumentBuffer, Editor}
-import dundertext.ui.keyboard.{Keyboard, KeyboardListener}
+import dundertext.ui.keyboard.{KeyChord, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
@@ -19,7 +19,7 @@ class EditorPresenter(
   keyboard.listen(this)
   val editor = Editor(DocumentBuffer.empty)
   editor.player = player
-  panel.display("Editor")
+  panel.display("")
 
   override def onKeyPress(char: Char): Boolean = {
     if (!editor.cursor.isAtText)
@@ -32,6 +32,8 @@ class EditorPresenter(
   }
 
   def redraw(): Unit = {
+    dom.document.getElementById("status").textContent = editor.cursor.toString
+
     def html = new EditorHtmlFormatter(editor).format()
     panel.display(html)
     if (editor.cursor.isAtText) {
@@ -41,7 +43,6 @@ class EditorPresenter(
       svgDisplay.display("", "", 0)
     }
 
-    dom.document.getElementById("status").textContent = editor.cursor.toString
   }
 
   def placeEditorCursor(): Unit = {
@@ -51,24 +52,28 @@ class EditorPresenter(
     selection.collapse(cs.firstChild, editor.cursor.pos)
   }
 
-  override def onKeyDown(code: Int): Boolean = {
-    val handled = code match {
-      case KeyCode.enter     => editor.execute(new AddRow); true
-      case KeyCode.backspace => editor.execute(new DeleteChar); true
-      case KeyCode.left      => editor.execute(new MoveCursor.Left); true
-      case KeyCode.right     => editor.execute(new MoveCursor.Right); true
-      case KeyCode.up        => editor.execute(new MoveCursor.Up); true
-      case KeyCode.down      => editor.execute(new MoveCursor.Down); true
-      case KeyCode.space     => editor.execute(new Space); true
-      case KeyCode.home      => editor.execute(new MoveCursor.RowBegin); true
-      case KeyCode.escape    => editor.execute(new BlurCursor); true
+  val keysToCommands: Map[KeyChord, List[CommandDescription]] = Map(
+    KeyChord(KeyCode.enter)     -> List(AddRow),
+    KeyChord(KeyCode.backspace) -> List(DeleteChar.Left, MergeRows),
+    KeyChord(KeyCode.left)      -> List(MoveCursor.Left),
+    KeyChord(KeyCode.right)     -> List(MoveCursor.Right),
+    KeyChord(KeyCode.up)        -> List(MoveCursor.Up),
+    KeyChord(KeyCode.down)      -> List(MoveCursor.Down),
+    KeyChord(KeyCode.space)     -> List(Space),
+    KeyChord(KeyCode.home)      -> List(MoveCursor.RowBegin),
+    KeyChord(KeyCode.end)       -> List(MoveCursor.RowEnd),
+    KeyChord(KeyCode.escape)    -> List(BlurCursor)
+  )
 
-      case _ => false
-    }
+  override def onKeyDown(chord: KeyChord): Boolean = {
+    dom.document.getElementById("status").textContent = ""
+    val cmds = keysToCommands.getOrElse(chord, Nil)
+    editor.execute(cmds)
+    redraw()
+    cmds.nonEmpty
+  }
 
-    if (handled)
-      redraw()
-
-    handled
+  def execute(cmd: Class[_ <: SubtitlingCommand]): Unit = {
+    if (cmd == classOf[AddRow]) new AddRow
   }
 }

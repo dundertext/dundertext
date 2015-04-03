@@ -1,5 +1,9 @@
 package dundertext.editor.cmd
 
+object Space extends CommandDescription {
+  def apply() = new Space
+}
+
 class Space extends SubtitlingCommand {
   override def applies = {
     !charLeftOfCursorIsSpace && !cursor.isAtBeginningOfRow

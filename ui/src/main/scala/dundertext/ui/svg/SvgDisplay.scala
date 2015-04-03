@@ -1,19 +1,22 @@
 package dundertext.ui.svg
 
+import dundertext.ui.editor.EditorHtmlFormatter
+
 import scalatags.Text.short._
 import scalatags.Text.svgAttrs._
 import scalatags.Text.svgTags._
 import org.scalajs.dom.svg
 
 class SvgDisplay(e: org.scalajs.dom.svg.Element) {
-  def display(row1: String, row2: String, cursorPos: Int) = {
+  def display(row1: String, row2: String, cursorPos: Int): SvgCursorLine = {
     val cursorRow: Int = 1
 
     def rowHtml(rowText: String): String = {
+      val txt = rowText.replace(' ', EditorHtmlFormatter.NbSp)
       g(
         rect(fill:="#000000", fillOpacity:="0.5"),
         text(x:="25%", y:="95%", fontFamily:="Verdana", fontSize:="40",
-             fontWeight:="bold", stroke:="black", fill:="white", strokeWidth:="0.6", rowText),
+             fontWeight:="bold", stroke:="black", fill:="white", strokeWidth:="0.6", txt),
         line(id:="cursor", stroke:="yellow", strokeWidth:="3")
       ).render
     }
@@ -41,13 +44,17 @@ class SvgRowGroup(e: svg.Element) {
   rectE.setAttribute("width", (box.width + 20).toString)
   rectE.setAttribute("height", box.height.toString)
 
-  def placeAbove(other: SvgRowGroup) {
+  def placeAbove(other: SvgRowGroup): Unit = {
     e.setAttribute("transform", "translate(0, -" + (other.box.height + 4) + ")" )
   }
 }
 
 class SvgCursorLine(g: SvgRowGroup, cursorPos: Int) {
-  val xPos = g.textE.getStartPositionOfChar(cursorPos).x.toString
+  val xPos = if (cursorPos == 0)
+    g.textE.getStartPositionOfChar(cursorPos).x.toString
+  else
+    g.textE.getEndPositionOfChar(cursorPos-1).x.toString
+
   g.lineE.setAttribute("x1", xPos)
   g.lineE.setAttribute("x2", xPos)
   g.lineE.setAttribute("y1", g.box.y.toString)

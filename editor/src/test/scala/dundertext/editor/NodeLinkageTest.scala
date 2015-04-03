@@ -12,7 +12,7 @@ class NodeLinkageTest {
   buffer.relink()
 
   @Test
-  def prev_and_next: Unit = {
+  def prev_and_next(): Unit = {
     val one = buffer.entries(0)
     val two = buffer.entries(1)
     val three = buffer.entries(2)

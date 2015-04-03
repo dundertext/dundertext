@@ -3,8 +3,11 @@ package dundertext.editor.cmd
 import dundertext.data.{Span, Row}
 import dundertext.editor.RowNode
 
-class AddRow extends SubtitlingCommand {
+object AddRow extends CommandDescription {
+  def apply() = new AddRow
+}
 
+class AddRow extends SubtitlingCommand {
   override def applies: Boolean = {
     cursor.row.hasText
   }

@@ -10,7 +10,7 @@ import scala.scalajs.js.JSApp
 
 object DundertextJsApp extends JSApp {
   def main(): Unit = {
-    println("Starting Dundertext with Scala.js 0.6")
+    println("Starting Dundertext")
 
     dom.document.body.innerHTML = MainLayout.page.render
 

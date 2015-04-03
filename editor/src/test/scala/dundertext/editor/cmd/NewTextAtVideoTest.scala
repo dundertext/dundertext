@@ -14,7 +14,7 @@ class NewTextAtVideoTest extends CommandTestBase {
   }
 
   @Test
-  def create_new_empty_text_at_video_time: Unit = {
+  def should_create_new_empty_text_at_video_time(): Unit = {
     val editor: Editor = emptyEditor
     editor.player = new MockPlayer
 

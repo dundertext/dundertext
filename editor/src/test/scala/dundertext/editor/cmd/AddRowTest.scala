@@ -7,7 +7,7 @@ import org.junit.Assert._
 class AddRowTest extends CommandTestBase {
 
   @Test
-  def add_row_below: Unit = {
+  def should_add_row_below(): Unit = {
     val editor = subtitleWithSingleRow
 
     val cmd = new AddRow()
@@ -17,7 +17,7 @@ class AddRowTest extends CommandTestBase {
   }
 
   @Test
-  def no_row_below_when_on_empty_row: Unit = {
+  def should_not_add_row_below_when_on_empty_row(): Unit = {
     val buffer = DocumentBuffer.fromText("First")
     buffer.firstSubtitle.append("")
     val editor: Editor = Editor(buffer)

@@ -26,6 +26,11 @@ class TextNode extends DocumentNode {
     relink()
   }
 
+  def remove(node: RowNode): Unit = {
+    rows.remove(rows.indexOf(node))
+    relink()
+  }
+
   def relink(): Unit = {
     var prev: RowNode = null
     var count = 0

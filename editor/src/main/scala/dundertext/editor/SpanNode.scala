@@ -7,8 +7,9 @@ class SpanNode {
   var prev: SpanNode = _
   var next: SpanNode = _
   var start: Int = _
-  var end: Int = _
-  var text = ""
+  var text: String = ""
+
+  def end: Int = start + text.length
 
   def containsPos(pos: Int): Boolean =
     start <= pos && pos < end
@@ -24,6 +25,8 @@ class SpanNode {
   }
 
   def length: Int = text.length
+
+  def build() = Span(text)
 }
 
 object SpanNode {

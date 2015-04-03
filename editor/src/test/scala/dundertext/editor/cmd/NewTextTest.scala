@@ -7,7 +7,7 @@ import org.junit.Assert._
 class NewTextTest extends CommandTestBase {
 
   @Test
-  def create_new_empty_text_on_empty_buffer: Unit = {
+  def should_create_new_empty_text_on_empty_buffer(): Unit = {
     val editor: Editor = emptyEditor
 
     val cmd = new NewText
@@ -18,7 +18,7 @@ class NewTextTest extends CommandTestBase {
   }
 
   @Test
-  def new_text_after_current: Unit = {
+  def should_add_new_text_after_current(): Unit = {
     val buffer = DocumentBuffer.fromText("First")
     val editor: Editor = Editor(buffer)
     editor.cursor.moveTo(buffer.firstSubtitle.lastRow)

@@ -1,8 +1,9 @@
 package dundertext.editor
 
-import dundertext.data.Row
+import dundertext.data.{Span, Row}
 
 import scala.collection.mutable
+import scala.collection.breakOut
 
 class RowNode {
   var parent: TextNode = _
@@ -25,13 +26,16 @@ class RowNode {
     s.delete(pos)
   }
 
+  def remove(): Unit = {
+    parent.remove(this)
+  }
+
   def relink(): Unit = {
     var p = 0
     for (s <- spans) {
       s.parent = this
       s.start = p
-      p = p + s.length
-      s.end = p
+      p = s.end
     }
   }
 
@@ -44,6 +48,14 @@ class RowNode {
   def asText(sb: StringBuilder): Unit = {
     for (s <- spans)
       sb.append(s.text)
+  }
+
+  def asSpans(): List[Span] =
+    (spans map (_.build()))(breakOut)
+
+  def append(ss: List[Span]): Unit = {
+    spans.appendAll(ss map SpanNode.from)
+    relink()
   }
 }
 

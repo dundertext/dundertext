@@ -1,6 +1,7 @@
 package dundertext.ui.editor
 
-import dundertext.editor.{EditorFormatter, Editor}
+import dundertext.editor.{Editor, EditorFormatter}
+import dundertext.ui.editor.EditorHtmlFormatter._
 
 import scalatags.Escaping
 
@@ -8,15 +9,24 @@ class EditorHtmlFormatter(editor: Editor) extends EditorFormatter(editor) {
 
   override def writeText(s: String) = {
     sb.append("<span>")
-    val s2 = if (s.isEmpty) " " else s
-    Escaping.escape(s2, sb)
+    writeEscaped(s)
     sb.append("</span>")
   }
 
   override def writeTextAtCursor(s: String, cursorPos: Int) = {
     sb.append(s"<span class='cursorat' data-cursor='$cursorPos'>")
-    val s2 = if (s.isEmpty) " " else s
-    Escaping.escape(s2, sb)
+    writeEscaped(s)
     sb.append("</span>")
   }
+
+  private def writeEscaped(s: String): Unit = {
+    if (s.isEmpty)
+      sb.append(NbSp)
+    else
+      Escaping.escape(s.replace(' ', NbSp), sb)
+  }
+}
+
+object EditorHtmlFormatter {
+  final val NbSp = '\u00a0'
 }

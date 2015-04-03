@@ -6,7 +6,7 @@ import org.junit.Assert._
 class CursorTest {
 
   @Test
-  def it_should_start_at_position_0 {
+  def should_start_at_position_0(): Unit = {
     val c = new Cursor
     assertEquals(0, c.pos)
   }

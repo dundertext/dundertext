@@ -1,10 +1,10 @@
 package dundertext.ui.keyboard
 
 trait Keyboard {
-  def listen(listener: KeyboardListener)
+  def listen(listener: KeyboardListener): Unit
 }
 
 trait KeyboardListener {
-  def onKeyDown(code: Int): Boolean = false
+  def onKeyDown(chord: KeyChord): Boolean = false
   def onKeyPress(char: Char): Boolean = false
 }

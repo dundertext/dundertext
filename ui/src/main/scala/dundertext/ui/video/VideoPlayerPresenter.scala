@@ -1,6 +1,6 @@
 package dundertext.ui.video
 
-import dundertext.ui.keyboard.{KeyCodes, Keyboard, KeyboardListener}
+import dundertext.ui.keyboard.{KeyChord, KeyCodes, Keyboard, KeyboardListener}
 import org.scalajs.dom
 
 class VideoPlayerPresenter(keyboard: Keyboard, panel: VideoPlayerPanel) extends KeyboardListener {
@@ -10,9 +10,9 @@ class VideoPlayerPresenter(keyboard: Keyboard, panel: VideoPlayerPanel) extends 
   keyboard.listen(this)
   dom.setInterval(redraw _, 100)
 
-  override def onKeyDown(code: Int): Boolean = {
+  override def onKeyDown(chord: KeyChord): Boolean = {
     val cmd: VideoPlayerCommand =
-      code match {
+      chord.code match {
         case KeyCodes.NumPad7 => new VideoPlayerCommand.CueStart
         case KeyCodes.NumPad9 => new VideoPlayerCommand.CueEnd
         case KeyCodes.NumPad5 => new VideoPlayerCommand.TogglePausePlay
