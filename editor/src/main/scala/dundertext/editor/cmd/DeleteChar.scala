@@ -15,4 +15,17 @@ object DeleteChar {
       cursor.moveLeft(1)
     }
   }
+
+  object Right extends CommandDescription {
+    def apply() = new Right
+  }
+
+  class Right extends SubtitlingCommand {
+    override def applies: Boolean =
+      !cursor.isAtEndOfRow
+
+    override def execute(): Unit = {
+      cursor.row.delete(cursor.pos)
+    }
+  }
 }

@@ -6,6 +6,7 @@ object MainLayout {
 
   def page =
     body (
+        input (id:="blur"),
         h1 ("Dundertext"),
 
         div (id:="videos",

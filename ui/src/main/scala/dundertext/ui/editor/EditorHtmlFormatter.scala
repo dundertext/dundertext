@@ -13,6 +13,12 @@ class EditorHtmlFormatter(editor: Editor) extends EditorFormatter(editor) {
     sb.append("</span>")
   }
 
+  override def writeTiming(s: String) = {
+    sb.append("<time>")
+    sb.append(s)
+    sb.append("</time>")
+  }
+
   override def writeTextAtCursor(s: String, cursorPos: Int) = {
     sb.append(s"<span class='cursorat' data-cursor='$cursorPos'>")
     writeEscaped(s)

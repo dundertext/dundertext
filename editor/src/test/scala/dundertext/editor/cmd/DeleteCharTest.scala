@@ -17,4 +17,18 @@ class DeleteCharTest extends CommandTestBase {
     // then
     assertRow("Abcdefgh i╎klm")
   }
+
+  @Test
+  def should_delete_right(): Unit = {
+    implicit val editor = given("""
+      Abcdefgh ij╎klm
+    """)
+
+    // when
+    def cmd = new DeleteChar.Right
+    editor.execute(cmd)
+
+    // then
+    assertRow("Abcdefgh ij╎lm")
+  }
 }

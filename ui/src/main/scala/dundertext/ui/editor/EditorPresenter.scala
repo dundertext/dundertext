@@ -34,10 +34,12 @@ class EditorPresenter(
   def redraw(): Unit = {
     dom.document.getElementById("status").textContent = editor.cursor.toString
 
-    def html = new EditorHtmlFormatter(editor).format()
-    panel.display(html)
+    def editorHtml = new EditorHtmlFormatter(editor).format()
+    panel.display(editorHtml)
     if (editor.cursor.isAtText)
       placeEditorCursor()
+    else
+      dom.document.getElementById("blur").asInstanceOf[html.Input].focus()
 
     svgDisplay.display(editor.cursor)
   }
@@ -50,8 +52,9 @@ class EditorPresenter(
   }
 
   val keysToCommands: Map[KeyChord, List[CommandDescription]] = Map(
-    KeyChord(KeyCode.enter)     -> List(AddRow),
+    KeyChord(KeyCode.enter)     -> List(AddRow, BlurOnEmptyLast),
     KeyChord(KeyCode.backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
+    KeyChord(KeyCode.delete)    -> List(DeleteChar.Right),
     KeyChord(KeyCode.left)      -> List(MoveCursor.Left),
     KeyChord(KeyCode.right)     -> List(MoveCursor.Right),
     KeyChord(KeyCode.up)        -> List(MoveCursor.Up),
@@ -59,7 +62,8 @@ class EditorPresenter(
     KeyChord(KeyCode.space)     -> List(Space),
     KeyChord(KeyCode.home)      -> List(MoveCursor.RowBegin),
     KeyChord(KeyCode.end)       -> List(MoveCursor.RowEnd),
-    KeyChord(KeyCode.escape)    -> List(BlurCursor)
+    KeyChord(KeyCode.escape)    -> List(BlurCursor),
+    KeyChord(KeyCode.pageUp)    -> List(Cue)
   )
 
   override def onKeyDown(chord: KeyChord): Boolean = {

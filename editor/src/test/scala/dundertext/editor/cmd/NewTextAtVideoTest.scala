@@ -8,9 +8,12 @@ import org.junit.Test
 class NewTextAtVideoTest extends CommandTestBase {
 
   class MockPlayer extends Player {
+
     override def currentTime: Time = {
       Time(0)
     }
+
+    override def cue(time: Time) = {}
   }
 
   @Test

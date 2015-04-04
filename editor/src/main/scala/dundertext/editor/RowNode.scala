@@ -15,6 +15,8 @@ class RowNode {
 
   def length: Int = spans.map(_.length).sum
   def hasText: Boolean = length > 0
+  def isEmpty: Boolean = length == 0
+  def isLast: Boolean = next == null
 
   def insert(pos: Int, text: String): Unit = {
     val s = spans.find(_.containsPos(pos)) getOrElse spans.last

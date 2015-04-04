@@ -11,8 +11,13 @@ import scala.collection.mutable
 
 class SvgDisplay(e: org.scalajs.dom.svg.Element) {
   def display(cursor: Cursor): Unit = {
-    if (!cursor.isAtText) return
+    if (cursor.isAtText)
+      displayAtCursor(cursor)
+    else
+      e.innerHTML = ""
+  }
 
+  def displayAtCursor(cursor: Cursor): Unit = {
     def rowHtml(rowText: String): String = {
       val txt: String = if (rowText.isEmpty)
         EditorHtmlFormatter.NbSp.toString

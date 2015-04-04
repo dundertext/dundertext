@@ -11,6 +11,7 @@ class EditorTest extends CommandTestBase {
     override def currentTime: Time = {
       Time(5000)
     }
+    override def cue(time: Time) = {}
   }
 
   @Test

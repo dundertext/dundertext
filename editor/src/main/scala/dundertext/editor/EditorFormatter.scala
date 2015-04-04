@@ -23,7 +23,7 @@ class EditorFormatter(editor: Editor) {
   }
 
   def format(timing: TimingNode): Unit = {
-    sb.append(timing.time.formatShort)
+    writeTiming(timing.time.formatShort)
     sb.append('\n')
   }
 
@@ -42,6 +42,7 @@ class EditorFormatter(editor: Editor) {
       writeText(span.text)
   }
 
+  def writeTiming(s: String) = sb.append(s)
   def writeText(s: String) = sb.append(s)
   def writeTextAtCursor(s: String, pos: Int) = sb.append(s)
 }
