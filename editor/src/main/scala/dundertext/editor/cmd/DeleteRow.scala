@@ -2,15 +2,14 @@ package dundertext.editor.cmd
 
 import dundertext.editor.RowNode
 
-object MergeRows extends CommandDescription {
-  def apply() = new MergeRows
+object DeleteRow extends CommandDescription {
+  def apply() = new DeleteRow
 }
 
-class MergeRows extends SubtitlingCommand {
+class DeleteRow extends SubtitlingCommand {
   override def applies: Boolean = {
     (cursor.text.rowCount > 1) &&
-    (cursor.row.prev != null) &&
-    cursor.row.hasText
+    (cursor.row.prev != null)
   }
 
   override def execute() = {
@@ -18,7 +17,6 @@ class MergeRows extends SubtitlingCommand {
     val target: RowNode = cursor.row.prev
     cursor.moveTo(target)
     cursor.moveRowEnd()
-    target.append(source.asSpans())
     source.remove()
   }
 }

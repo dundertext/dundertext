@@ -1,5 +1,6 @@
 package dundertext.editor.cmd
 
+import org.junit.Assert._
 import org.junit.Test
 
 class MergeRowsTest extends CommandTestBase {
@@ -18,5 +19,20 @@ class MergeRowsTest extends CommandTestBase {
     // then
     assertRow("Första raden╎Andra raden")
   }
-}
 
+  @Test
+  def should_not_merge_empty_row(): Unit = {
+    implicit val editor = given("""
+      ABC
+      ╎
+    """)
+
+    // when
+    def cmd = new MergeRows
+    editor.execute(cmd)
+
+    // then
+    assertEquals("1/2/0", editor.cursor.toString)
+    assertRow("╎")
+  }
+}

@@ -29,4 +29,5 @@ class EditorHtmlFormatter(editor: Editor) extends EditorFormatter(editor) {
 
 object EditorHtmlFormatter {
   final val NbSp = '\u00a0'
+  final val ZwSp = '\u200b'
 }

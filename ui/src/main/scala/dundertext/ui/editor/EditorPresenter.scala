@@ -36,13 +36,10 @@ class EditorPresenter(
 
     def html = new EditorHtmlFormatter(editor).format()
     panel.display(html)
-    if (editor.cursor.isAtText) {
+    if (editor.cursor.isAtText)
       placeEditorCursor()
-      svgDisplay.display(editor.cursor.row.text, "", editor.cursor.pos)
-    } else {
-      svgDisplay.display("", "", 0)
-    }
 
+    svgDisplay.display(editor.cursor)
   }
 
   def placeEditorCursor(): Unit = {
@@ -54,7 +51,7 @@ class EditorPresenter(
 
   val keysToCommands: Map[KeyChord, List[CommandDescription]] = Map(
     KeyChord(KeyCode.enter)     -> List(AddRow),
-    KeyChord(KeyCode.backspace) -> List(DeleteChar.Left, MergeRows),
+    KeyChord(KeyCode.backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
     KeyChord(KeyCode.left)      -> List(MoveCursor.Left),
     KeyChord(KeyCode.right)     -> List(MoveCursor.Right),
     KeyChord(KeyCode.up)        -> List(MoveCursor.Up),
