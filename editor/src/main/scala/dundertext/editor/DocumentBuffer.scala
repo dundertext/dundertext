@@ -6,6 +6,12 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 
 class DocumentBuffer {
+
+  def insertBefore(node: DocumentNode, pos: DocumentNode): Unit = {
+    val idx = entries.indexOf(pos)
+    entries.insert(idx, node)
+  }
+
   val entries = mutable.Buffer[DocumentNode]()
 
   def firstSubtitle: TextNode = (entries collectFirst {
@@ -57,13 +63,21 @@ class DocumentBuffer {
   def length: Int =
     entries.length
 
-  def findNodeAt(time: Time): TextNode = {
+  def isEmpty: Boolean =
+    length == 0
+
+  def findNodeAt(time: Time): TimingNode = {
     @tailrec def findAfter(n: DocumentNode): TimingNode = n match {
+      case null => null
       case tn: TimingNode if tn.time.isAfter(time) => tn
       case _ => findAfter(n.next)
     }
-    val after = findAfter(entries.head)
-    after.prev.asInstanceOf[TextNode]
+    if (isEmpty) null else findAfter(entries.head)
+  }
+
+  def findTextNodeAt(time: Time): TextNode = {
+    val after = findNodeAt(time)
+    after.prevText
   }
 
   override def toString = asText

@@ -11,10 +11,19 @@ object NewTextAtVideo extends CommandDescription {
  */
 class NewTextAtVideo extends SubtitlingCommand {
   override def execute(): Unit = {
+    val insertPos: TimingNode = buffer.findNodeAt(player.currentTime)
+
     val tn = TimingNode(player.currentTime)
-    buffer.append(tn)
     val t = TextNode.empty
-    buffer.append(t)
+
+    if (insertPos != null) {
+      buffer.insertBefore(tn, insertPos)
+      buffer.insertBefore(t, insertPos)
+    } else {
+      buffer.append(tn)
+      buffer.append(t)
+    }
+
     buffer.relink()
     cursor.moveTo(t)
   }

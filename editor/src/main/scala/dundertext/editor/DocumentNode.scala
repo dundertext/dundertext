@@ -10,6 +10,16 @@ abstract class DocumentNode {
     case txn: TextNode => txn.prevTime
   }
 
+  def nextTime: TimingNode = next match {
+    case tmn: TimingNode => tmn
+    case txn: TextNode => txn.nextTime
+  }
+
+  def prevText: TextNode = prev match {
+    case tmn: TimingNode => prev.prevText
+    case txn: TextNode => txn
+  }
+
   def nextText: TextNode = next match {
     case tmn: TimingNode => next.nextText
     case txn: TextNode => txn

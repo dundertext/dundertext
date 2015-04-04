@@ -35,7 +35,7 @@ class Editor {
   }
 
   def placeCursorAtVideo(): Unit = {
-    val textNode = buffer.findNodeAt(player.currentTime)
+    val textNode = buffer.findTextNodeAt(player.currentTime)
     cursor.moveTo(textNode)
   }
 }

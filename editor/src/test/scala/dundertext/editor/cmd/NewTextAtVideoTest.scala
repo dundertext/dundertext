@@ -1,32 +1,49 @@
 package dundertext.editor.cmd
 
 import dundertext.data.Time
-import dundertext.editor.{TimingNode, Player, DocumentBuffer, Editor}
+import dundertext.editor._
 import org.junit.Assert._
 import org.junit.Test
 
 class NewTextAtVideoTest extends CommandTestBase {
 
-  class MockPlayer extends Player {
-
-    override def currentTime: Time = {
-      Time(0)
-    }
-
-    override def cue(time: Time) = {}
-  }
-
   @Test
   def should_create_new_empty_text_at_video_time(): Unit = {
+    // given
     val editor: Editor = emptyEditor
-    editor.player = new MockPlayer
+    player.currentTime = Time(0)
 
+    // when
     val cmd = new NewTextAtVideo
     editor.execute(cmd)
 
+    // then
     assertEquals(2, editor.buffer.entries.size)
     val firstSub = editor.buffer.firstSubtitle
     val firstTime = firstSub.prev.asInstanceOf[TimingNode]
     assertEquals("0:00.0", firstTime.time.formatShort)
+  }
+
+  @Test
+  def should_insert_text_in_timing_order(): Unit = {
+    implicit val editor = given("""
+      10
+      Hej
+      30
+      Trall
+    """)
+    player.currentTime = Time(20)
+
+    // when
+    val cmd = new NewTextAtVideo
+    editor.execute(cmd)
+
+    // then
+    assertEquals(10, editor.buffer.entries(0).asInstanceOf[TimingNode].time.millis)
+    assertEquals("Hej", editor.buffer.entries(1).asInstanceOf[TextNode].text.trim)
+    assertEquals(20, editor.buffer.entries(2).asInstanceOf[TimingNode].time.millis)
+    assertEquals("", editor.buffer.entries(3).asInstanceOf[TextNode].text.trim)
+    assertEquals(30, editor.buffer.entries(4).asInstanceOf[TimingNode].time.millis)
+    assertEquals("Trall", editor.buffer.entries(5).asInstanceOf[TextNode].text.trim)
   }
 }

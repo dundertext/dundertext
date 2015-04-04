@@ -63,7 +63,8 @@ class EditorPresenter(
     KeyChord(KeyCode.home)      -> List(MoveCursor.RowBegin),
     KeyChord(KeyCode.end)       -> List(MoveCursor.RowEnd),
     KeyChord(KeyCode.escape)    -> List(BlurCursor),
-    KeyChord(KeyCode.pageUp)    -> List(Cue)
+    KeyChord(KeyCode.pageUp)    -> List(Cue.Prev),
+    KeyChord(KeyCode.pageDown)  -> List(Cue.Next)
   )
 
   override def onKeyDown(chord: KeyChord): Boolean = {
