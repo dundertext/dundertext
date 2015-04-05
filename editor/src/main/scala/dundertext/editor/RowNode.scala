@@ -59,6 +59,10 @@ class RowNode {
     spans.appendAll(ss map SpanNode.from)
     relink()
   }
+
+  def build(): Row = {
+    Row(asSpans())
+  }
 }
 
 object RowNode {

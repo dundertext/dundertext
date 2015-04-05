@@ -24,6 +24,10 @@ class Cursor {
   def isAtText: Boolean =
     text ne null
 
+  def isAt(node: TextNode): Boolean = {
+    isAtText && text == node
+  }
+
   def moveTo(t: TextNode): Unit = {
     text = t
     row = t.firstRow

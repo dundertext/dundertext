@@ -1,13 +1,14 @@
 package dundertext.ui.editor
 
 import dundertext.editor.cmd._
-import dundertext.editor.{Player, DocumentBuffer, Editor}
+import dundertext.editor._
 import dundertext.ui.keyboard.{KeyChord, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
 import org.scalajs.dom.raw.Selection
+import scala.collection.breakOut
 
 class EditorPresenter(
     keyboard: Keyboard,
@@ -16,22 +17,26 @@ class EditorPresenter(
     player: Player
 ) extends KeyboardListener {
 
+  // init
   keyboard.listen(this)
   val editor = Editor(DocumentBuffer.empty)
   editor.player = player
   panel.display("")
+  dom.setInterval(redrawVideo _, 100)
+  // end init
 
   override def onKeyPress(char: Char): Boolean = {
     if (!editor.cursor.isAtText)
       editor.execute(new NewTextAtVideo)
 
     editor.execute(new TypeText(char.toString))
+    editor.buffer.relink()
     redraw()
 
     true
   }
 
-  def redraw(): Unit = {
+  private def redraw(): Unit = {
     dom.document.getElementById("status").textContent = editor.cursor.toString
 
     def editorHtml = new EditorHtmlFormatter(editor).format()
@@ -41,17 +46,32 @@ class EditorPresenter(
     else
       dom.document.getElementById("blur").asInstanceOf[html.Input].focus()
 
-    svgDisplay.display(editor.cursor)
+    redrawVideo()
   }
 
-  def placeEditorCursor(): Unit = {
+  private def redrawVideo(): Unit = {
+    val playerTime = player.currentTime
+    val tns: List[TextNode] = (editor.buffer.entries collect {
+      case tn: TextNode if tn.display.conatins(playerTime) => tn
+    })(breakOut)
+
+    if (tns.isEmpty)
+      svgDisplay.display(null, null)
+    else {
+      val tn = tns.head
+      val c: Cursor = if (editor.cursor.isAt(tn)) editor.cursor else null
+      svgDisplay.display(tn, c)
+    }
+  }
+
+  private def placeEditorCursor(): Unit = {
     panel.focus()
     val selection: Selection = dom.window.getSelection()
     val cs: html.Span = panel.cursorSpan
     selection.collapse(cs.firstChild, editor.cursor.pos)
   }
 
-  val keysToCommands: Map[KeyChord, List[CommandDescription]] = Map(
+  private val keysToCommands: Map[KeyChord, List[CommandDescription]] = Map(
     KeyChord(KeyCode.enter)     -> List(AddRow, BlurOnEmptyLast),
     KeyChord(KeyCode.backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
     KeyChord(KeyCode.delete)    -> List(DeleteChar.Right),
@@ -73,9 +93,5 @@ class EditorPresenter(
     editor.execute(cmds)
     redraw()
     cmds.nonEmpty
-  }
-
-  def execute(cmd: Class[_ <: SubtitlingCommand]): Unit = {
-    if (cmd == classOf[AddRow]) new AddRow
   }
 }

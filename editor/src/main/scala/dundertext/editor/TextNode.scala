@@ -1,13 +1,16 @@
 package dundertext.editor
 
-import dundertext.data.{Span, Row}
+import dundertext.data._
 
 import scala.collection.mutable
+import scala.collection.breakOut
 
 class TextNode private() extends DocumentNode {
   var nr: Int = _
 
   val rows = mutable.Buffer[RowNode]()
+
+  var display: DisplayedText = _
 
   def firstRow: RowNode = rows.head
   def lastRow: RowNode = rows.last
@@ -59,6 +62,17 @@ class TextNode private() extends DocumentNode {
 
   def hasText: Boolean = {
     rows.exists(_.hasText)
+  }
+
+  def build(): Text = {
+    Text((rows map (_.build()))(breakOut))
+  }
+
+  def recalcDisplay(): Unit = {
+    val in = prevTime.time
+    val next = nextTime.time
+    val length = Length(next.millis - in.millis - DisplayedText.Separation.millis)
+    display = DisplayedText(build(), in, length)
   }
 }
 

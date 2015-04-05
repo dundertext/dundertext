@@ -1,6 +1,6 @@
 package dundertext.ui.svg
 
-import dundertext.editor.Cursor
+import dundertext.editor.{TextNode, Cursor}
 import dundertext.ui.editor.EditorHtmlFormatter
 
 import scalatags.Text.short._
@@ -10,14 +10,14 @@ import org.scalajs.dom.svg
 import scala.collection.mutable
 
 class SvgDisplay(e: org.scalajs.dom.svg.Element) {
-  def display(cursor: Cursor): Unit = {
-    if (cursor.isAtText)
-      displayAtCursor(cursor)
+  def display(text: TextNode, cursor: Cursor): Unit = {
+    if (text != null)
+      displayText(text, cursor)
     else
       e.innerHTML = ""
   }
 
-  def displayAtCursor(cursor: Cursor): Unit = {
+  def displayText(textNode: TextNode, cursor: Cursor): Unit = {
     def rowHtml(rowText: String): String = {
       val txt: String = if (rowText.isEmpty)
         EditorHtmlFormatter.NbSp.toString
@@ -33,14 +33,15 @@ class SvgDisplay(e: org.scalajs.dom.svg.Element) {
     }
 
     val sb = new StringBuilder
-    for (row <- cursor.text.rows) {
+    for (row <- textNode.rows) {
       sb.append(rowHtml(row.text))
     }
 
     e.innerHTML = sb.result()
     val rows = createRows()
     rows foreach (_.place())
-    new SvgCursorLine(rows(cursor.row.nr - 1), cursor.pos)
+    if (cursor != null)
+      new SvgCursorLine(rows(cursor.row.nr - 1), cursor.pos)
   }
 
   private def createRows(): mutable.Buffer[SvgRowGroup] = {

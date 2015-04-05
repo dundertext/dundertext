@@ -47,18 +47,22 @@ class DocumentBuffer private () {
 
   def relink(): Unit = {
     var prev: DocumentNode = null
+    for (e <- entries) {
+      if (prev ne null)
+        prev.next = e
+      e.prev = prev
+      prev = e
+    }
+
     var count = 0
     for (e <- entries) {
       e match {
         case t: TextNode =>
           count += 1
           t.nr = count
+          t.recalcDisplay()
         case _ =>
       }
-      if (prev ne null)
-        prev.next = e
-      e.prev = prev
-      prev = e
     }
   }
 
