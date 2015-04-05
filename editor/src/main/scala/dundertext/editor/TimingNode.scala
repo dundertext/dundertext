@@ -2,15 +2,14 @@ package dundertext.editor
 
 import dundertext.data.Time
 
-class TimingNode extends DocumentNode {
+class TimingNode private() extends DocumentNode {
   var time: Time = _
 
-  override def asText(sb: StringBuilder): Unit = {
-    sb.append(time)
-    sb.append('\n')
-  }
+  def isEndNode: Boolean =
+    prev == null || next == null
 
-  override def toString = s"TimingNode($time)"
+  override def toString: String =
+    time.formatShort
 }
 
 object TimingNode {

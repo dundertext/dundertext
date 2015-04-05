@@ -4,7 +4,7 @@ import dundertext.data.{Span, Row}
 
 import scala.collection.mutable
 
-class TextNode extends DocumentNode {
+class TextNode private() extends DocumentNode {
   var nr: Int = _
 
   val rows = mutable.Buffer[RowNode]()
@@ -15,6 +15,7 @@ class TextNode extends DocumentNode {
   def rowCount = rows.length
 
   def append(s: String): this.type = {
+    if (!hasText) rows.clear()
     rows.append(RowNode.from(Row(List(Span(s)))))
     relink()
     this
@@ -45,18 +46,16 @@ class TextNode extends DocumentNode {
     }
   }
 
-  override def asText(sb: StringBuilder): Unit = {
-    for (r <- rows) {
-      r.asText(sb)
-      sb.append('\n')
-    }
-  }
-
   def text: String = {
     val sb = new StringBuilder
-    asText(sb)
+    for (row <- rows) {
+      sb.append(row.text).append('\n')
+    }
     sb.result()
   }
+
+  override def toString: String =
+    text
 
   def hasText: Boolean = {
     rows.exists(_.hasText)

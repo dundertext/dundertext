@@ -13,20 +13,20 @@ class AddRowTest extends CommandTestBase {
     val cmd = new AddRow()
     editor.execute(cmd)
 
-    assertEquals(2, editor.buffer.firstSubtitle.rowCount)
+    assertEquals(2, editor.buffer.firstText.rowCount)
   }
 
   @Test
   def should_not_add_row_below_when_on_empty_row(): Unit = {
     val buffer = DocumentBuffer.fromText("First")
-    buffer.firstSubtitle.append("")
+    buffer.firstText.append("")
     val editor: Editor = Editor(buffer)
-    editor.cursor.moveTo(buffer.firstSubtitle.lastRow)
-    assertEquals(2, editor.buffer.firstSubtitle.rowCount)
+    editor.cursor.moveTo(buffer.firstText.lastRow)
+    assertEquals(2, editor.buffer.firstText.rowCount)
 
     val cmd = new AddRow()
     editor.execute(cmd)
 
-    assertEquals(2, editor.buffer.firstSubtitle.rowCount)
+    assertEquals(2, editor.buffer.firstText.rowCount)
   }
 }

@@ -4,7 +4,7 @@ import dundertext.editor.cmd.{CommandDescription, SubtitlingCommand}
 
 import scala.annotation.tailrec
 
-class Editor {
+class Editor private() {
   var buffer: DocumentBuffer = _
   var cursor: Cursor = new Cursor
   var player: Player = _
@@ -31,7 +31,7 @@ class Editor {
   }
 
   def focusBeginning(): Unit = {
-    cursor.moveTo(buffer.firstSubtitle)
+    cursor.moveTo(buffer.firstText)
   }
 
   def placeCursorAtVideo(): Unit = {

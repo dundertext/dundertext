@@ -1,6 +1,8 @@
 package dundertext.editor
 
 class Cursor {
+  var prev: TimingNode = _
+  var next: TimingNode = _
   var text: TextNode = _
   var row: RowNode = _
   var span: SpanNode = _

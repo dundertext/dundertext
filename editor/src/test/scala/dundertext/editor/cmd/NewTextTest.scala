@@ -13,19 +13,19 @@ class NewTextTest extends CommandTestBase {
     val cmd = new NewText
     editor.execute(cmd)
 
-    assertEquals(1, editor.buffer.entries.size)
-    assertEquals("", editor.buffer.firstSubtitle.text.trim)
+    assertEquals(1, editor.buffer.length)
+    assertEquals("", editor.buffer.firstText.text.trim)
   }
 
   @Test
   def should_add_new_text_after_current(): Unit = {
     val buffer = DocumentBuffer.fromText("First")
     val editor: Editor = Editor(buffer)
-    editor.cursor.moveTo(buffer.firstSubtitle.lastRow)
+    editor.cursor.moveTo(buffer.firstText.lastRow)
 
     val cmd = new NewText
     editor.execute(cmd)
 
-    assertEquals(2, editor.buffer.entries.size)
+    assertEquals(2, editor.buffer.length)
   }
 }

@@ -5,11 +5,12 @@ import org.junit.Assert._
 
 class DocumentBufferTest {
 
-  val buffer = new DocumentBuffer
+  val buffer = DocumentBuffer.empty
 
   @Test
   def should_be_empty_at_start(): Unit = {
     assertEquals(0, buffer.length)
+    assertTrue(buffer.isEmpty)
   }
 
   @Test

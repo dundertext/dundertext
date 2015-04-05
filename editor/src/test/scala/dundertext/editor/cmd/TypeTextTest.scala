@@ -10,14 +10,14 @@ class TypeTextTest extends CommandTestBase {
   @Test
   def should_type_text_at_start_of_row(): Unit = {
     editor.execute(cmd)
-    assertEquals("typedFirst row.", editor.buffer.firstSubtitle.text.trim)
+    assertEquals("typedFirst row.", editor.buffer.firstText.text.trim)
   }
 
   @Test
   def should_type_text_at_end_of_row(): Unit = {
     editor.cursor.moveRowEnd()
     editor.execute(cmd)
-    assertEquals("First row.typed", editor.buffer.firstSubtitle.text.trim)
+    assertEquals("First row.typed", editor.buffer.firstText.text.trim)
   }
 
   @Test

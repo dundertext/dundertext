@@ -24,7 +24,7 @@ abstract class CommandTestBase {
 
   def subtitleWithSingleRow: Editor = {
     val buffer = DocumentBuffer.fromText("First row.")
-    assertEquals(1, buffer.firstSubtitle.rowCount)
+    assertEquals(1, buffer.firstText.rowCount)
     assertEquals("First row.\n\n", buffer.toString)
     val editor = Editor(buffer)
     editor.focusBeginning()
@@ -36,10 +36,10 @@ abstract class CommandTestBase {
     val editor = Editor(buffer)
     editor.player = player
 
-    var textNode = new TextNode
+    var textNode = TextNode.empty
     def finishNode(): Unit = {
       if (textNode.hasText) buffer.append(textNode)
-      textNode = new TextNode
+      textNode = TextNode.empty
     }
 
     for (line <- document.stripMargin.trim.lines.map(_.trim)) {

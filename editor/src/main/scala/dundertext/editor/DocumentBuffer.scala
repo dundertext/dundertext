@@ -5,40 +5,42 @@ import dundertext.data.Time
 import scala.annotation.tailrec
 import scala.collection.mutable
 
-class DocumentBuffer {
+class DocumentBuffer private () {
+  val entries: mutable.Buffer[DocumentNode] =
+    mutable.Buffer(TimingNode(Time.Start), TimingNode(Time.End))
 
   def insertBefore(node: DocumentNode, pos: DocumentNode): Unit = {
     val idx = entries.indexOf(pos)
     entries.insert(idx, node)
   }
 
-  val entries = mutable.Buffer[DocumentNode]()
+  def firstText: TextNode =
+    entries.head.nextText
 
-  def firstSubtitle: TextNode = (entries collectFirst {
-    case n: TextNode => n
-  }).get
-
-  def lastSubtitle: TextNode = entries.last.asInstanceOf[TextNode]
+  def lastText: TextNode =
+    entries.last.prevText
 
   def asText = {
     val sb = new StringBuilder
-    for (e <- entries) {
-      e.asText(sb)
-      sb.append('\n')
+    for (i <- 1 to entries.length - 2) {
+      val e = entries(i)
+      sb.append(e.toString).append('\n')
     }
     sb.result()
   }
 
   def append(s: String): this.type = {
-    val t = new TextNode
+    val t = TextNode.empty
     t.append(s)
-    entries += t
-    relink()
-    this
+    append(t)
+  }
+
+  def append(t: Time): this.type = {
+    append(TimingNode(t))
   }
 
   def append(t: DocumentNode): this.type = {
-    entries += t
+    entries.insert(entries.size - 1, t)
     relink()
     this
   }
@@ -60,13 +62,15 @@ class DocumentBuffer {
     }
   }
 
-  def length: Int =
-    entries.length
+  def length: Int = {
+    val lt = lastText
+    if (lt == null) 0 else lt.nr
+  }
 
   def isEmpty: Boolean =
-    length == 0
+    entries.length == 2
 
-  def findNodeAt(time: Time): TimingNode = {
+  def findNodeAfter(time: Time): TimingNode = {
     @tailrec def findAfter(n: DocumentNode): TimingNode = n match {
       case null => null
       case tn: TimingNode if tn.time.isAfter(time) => tn
@@ -76,7 +80,7 @@ class DocumentBuffer {
   }
 
   def findTextNodeAt(time: Time): TextNode = {
-    val after = findNodeAt(time)
+    val after = findNodeAfter(time)
     after.prevText
   }
 
@@ -93,6 +97,7 @@ object DocumentBuffer {
 
   def empty = {
     val b = new DocumentBuffer
+    b.relink()
     b
   }
 }

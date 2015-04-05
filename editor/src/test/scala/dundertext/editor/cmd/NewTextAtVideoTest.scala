@@ -18,8 +18,8 @@ class NewTextAtVideoTest extends CommandTestBase {
     editor.execute(cmd)
 
     // then
-    assertEquals(2, editor.buffer.entries.size)
-    val firstSub = editor.buffer.firstSubtitle
+    assertEquals(4, editor.buffer.entries.size)
+    val firstSub = editor.buffer.firstText
     val firstTime = firstSub.prev.asInstanceOf[TimingNode]
     assertEquals("0:00.0", firstTime.time.formatShort)
   }
@@ -39,11 +39,11 @@ class NewTextAtVideoTest extends CommandTestBase {
     editor.execute(cmd)
 
     // then
-    assertEquals(10, editor.buffer.entries(0).asInstanceOf[TimingNode].time.millis)
-    assertEquals("Hej", editor.buffer.entries(1).asInstanceOf[TextNode].text.trim)
-    assertEquals(20, editor.buffer.entries(2).asInstanceOf[TimingNode].time.millis)
-    assertEquals("", editor.buffer.entries(3).asInstanceOf[TextNode].text.trim)
-    assertEquals(30, editor.buffer.entries(4).asInstanceOf[TimingNode].time.millis)
-    assertEquals("Trall", editor.buffer.entries(5).asInstanceOf[TextNode].text.trim)
+    assertEquals(10, editor.buffer.entries(1).asInstanceOf[TimingNode].time.millis)
+    assertEquals("Hej", editor.buffer.entries(2).asInstanceOf[TextNode].text.trim)
+    assertEquals(20, editor.buffer.entries(3).asInstanceOf[TimingNode].time.millis)
+    assertEquals("", editor.buffer.entries(4).asInstanceOf[TextNode].text.trim)
+    assertEquals(30, editor.buffer.entries(5).asInstanceOf[TimingNode].time.millis)
+    assertEquals("Trall", editor.buffer.entries(6).asInstanceOf[TextNode].text.trim)
   }
 }

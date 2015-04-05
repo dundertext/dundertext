@@ -26,7 +26,7 @@ object Cue {
     override def execute() = {
       val nextTime = cursor.text.nextTime
       editor.player.cue(nextTime.time)
-      val text: TextNode =nextTime.nextText
+      val text: TextNode = nextTime.nextText
       cursor.moveTo(text)
     }
   }

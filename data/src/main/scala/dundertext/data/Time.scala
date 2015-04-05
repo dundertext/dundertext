@@ -31,6 +31,9 @@ final case class Time(millis: Int) {
 }
 
 object Time {
+  final val Start = Time(0)
+  final val End = Time(Int.MaxValue)
+
   def fromSeconds(secs: Double): Time =
     Time((secs * 1000.0d).toInt)
 }

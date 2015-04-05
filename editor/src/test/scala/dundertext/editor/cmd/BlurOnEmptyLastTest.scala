@@ -18,9 +18,9 @@ class BlurOnEmptyLastTest extends CommandTestBase {
     editor.execute(cmd)
 
     // then
-    assertEquals(2, editor.buffer.firstSubtitle.rowCount)
-    assertEquals("Rad 1", editor.buffer.firstSubtitle.firstRow.text)
-    assertEquals("Rad 2", editor.buffer.firstSubtitle.lastRow.text)
+    assertEquals(2, editor.buffer.firstText.rowCount)
+    assertEquals("Rad 1", editor.buffer.firstText.firstRow.text)
+    assertEquals("Rad 2", editor.buffer.firstText.lastRow.text)
     assertEquals("", editor.cursor.toString)
   }
 }

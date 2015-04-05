@@ -9,25 +9,24 @@ class EditorFormatter(editor: Editor) {
     sb.toString()
   }
 
-  def format(node: DocumentNode): Unit = node match {
+  private def format(node: DocumentNode): Unit = node match {
     case n: TextNode => format(n)
-    case n: TimingNode => format(n)
+    case n: TimingNode if !n.isEndNode => format(n)
     case _ =>
   }
 
-  def format(text: TextNode): Unit = {
+  private def format(text: TextNode): Unit = {
     for (r <- text.rows) {
       row(r)
     }
-    sb.append('\n')
   }
 
-  def format(timing: TimingNode): Unit = {
+  private def format(timing: TimingNode): Unit = {
     writeTiming(timing.time.formatShort)
     sb.append('\n')
   }
 
-  def row(row: RowNode): Unit = {
+  private def row(row: RowNode): Unit = {
     sb.append("  ")
     for (s <- row.spans) {
       span(s)
@@ -35,14 +34,14 @@ class EditorFormatter(editor: Editor) {
     sb.append('\n')
   }
 
-  def span(span: SpanNode): Unit = {
+  private def span(span: SpanNode): Unit = {
     if (span == editor.cursor.span)
       writeTextAtCursor(span.text, editor.cursor.pos)
     else
       writeText(span.text)
   }
 
-  def writeTiming(s: String) = sb.append(s)
-  def writeText(s: String) = sb.append(s)
-  def writeTextAtCursor(s: String, pos: Int) = sb.append(s)
+  protected def writeTiming(s: String) = sb.append(s)
+  protected def writeText(s: String) = sb.append(s)
+  protected def writeTextAtCursor(s: String, pos: Int) = sb.append(s)
 }
