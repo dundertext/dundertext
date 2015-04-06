@@ -7,10 +7,18 @@ import org.junit.Assert._
 abstract class CommandTestBase {
 
   class MockPlayer extends Player {
+    var playing = false
     var currentTime: Time = _
     def cue(time: Time): Unit = {
       currentTime = time
     }
+
+    override def isPaused = !playing
+    override def play() = playing = true
+    override def seek(offsetMillis: Int) = currentTime = new Time(currentTime.millis + offsetMillis)
+    override def cueEnd() = ???
+    override def pause() = playing = false
+    override def cueStart() = ???
   }
 
   val player = new MockPlayer

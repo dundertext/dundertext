@@ -1,60 +1,72 @@
 package dundertext.ui.video
 
-sealed abstract class VideoPlayerCommand {
-  var player: VideoPlayer = _
-  def execute(): Unit
-}
+import dundertext.editor.cmd.{CommandDescription, SubtitlingCommand}
 
 object VideoPlayerCommand {
 
-  object None extends VideoPlayerCommand {
-    override def execute() = {}
-  }
-
-  class CueStart extends VideoPlayerCommand {
+  class CueStart extends SubtitlingCommand {
     override def execute() = {
       player.cueStart()
     }
   }
 
-  class CueEnd extends VideoPlayerCommand {
+  class CueEnd extends SubtitlingCommand {
     override def execute() = {
       player.cueEnd()
     }
   }
 
-  class TenthForward extends VideoPlayerCommand {
+  object TenthForward extends CommandDescription {
+    def apply() = new TenthForward
+  }
+
+  class TenthForward extends SubtitlingCommand {
     override def execute() = {
       player.pause()
       player.seek(100)
     }
   }
 
-  class TenthBackward extends VideoPlayerCommand {
+  object TenthBackward extends CommandDescription {
+    def apply() = new TenthBackward
+  }
+
+  class TenthBackward extends SubtitlingCommand {
     override def execute() = {
       player.pause()
       player.seek(-100)
     }
   }
 
-  class SecondForward extends VideoPlayerCommand {
+  object SecondForward extends CommandDescription {
+    def apply() = new SecondForward
+  }
+
+  class SecondForward extends SubtitlingCommand {
     override def execute() = {
       player.seek(1000)
     }
   }
 
-  class SecondBackward extends VideoPlayerCommand {
+  object SecondBackward extends CommandDescription {
+    def apply() = new SecondBackward
+  }
+
+
+  class SecondBackward extends SubtitlingCommand {
     override def execute() = {
       player.seek(-1000)
     }
   }
 
-  class TogglePausePlay extends VideoPlayerCommand {
+  object TogglePausePlay extends CommandDescription {
+    def apply() = new TogglePausePlay
+  }
+
+  class TogglePausePlay extends SubtitlingCommand {
     override def execute() = {
       if (player.isPaused) player.play()
       else player.pause()
     }
   }
-
 }
-

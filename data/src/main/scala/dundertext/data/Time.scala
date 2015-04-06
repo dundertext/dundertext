@@ -36,4 +36,7 @@ object Time {
 
   def fromSeconds(secs: Double): Time =
     Time((secs * 1000.0d).toInt)
+
+  def fromSecondsRounded(secs: Double): Time =
+    Time(((secs * 1000.0d).toInt / 100) * 100)
 }

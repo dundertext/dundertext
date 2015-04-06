@@ -8,7 +8,7 @@ class VideoPlayer(e: html.Video) extends dundertext.editor.Player {
   e.play()
 
   def isPaused: Boolean = e.paused
-  def currentTime: Time = Time.fromSeconds(e.currentTime)
+  def currentTime: Time = Time.fromSecondsRounded(e.currentTime)
 
   def play(): Unit = e.play()
   def pause(): Unit = {
@@ -22,5 +22,5 @@ class VideoPlayer(e: html.Video) extends dundertext.editor.Player {
   def cueStart(): Unit = e.currentTime = 0.0d
   def cueEnd(): Unit = e.currentTime = e.duration
 
-  def seek(offsetMillis: Long): Unit = e.currentTime += offsetMillis / 1000.0d
+  def seek(offsetMillis: Int): Unit = e.currentTime += offsetMillis / 1000.0d
 }

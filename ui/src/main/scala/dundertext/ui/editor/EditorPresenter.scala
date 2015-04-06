@@ -2,8 +2,10 @@ package dundertext.ui.editor
 
 import dundertext.editor.cmd._
 import dundertext.editor._
-import dundertext.ui.keyboard.{KeyChord, Keyboard, KeyboardListener}
+import dundertext.ui.keyboard.{KeyCodes, KeyChord, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
+import dundertext.ui.video.VideoPlayerCommand
+import dundertext.ui.video.VideoPlayerCommand._
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
@@ -71,21 +73,37 @@ class EditorPresenter(
     selection.collapse(cs.firstChild, editor.cursor.pos)
   }
 
-  private val keysToCommands: Map[KeyChord, List[CommandDescription]] = Map(
-    KeyChord(KeyCode.enter)     -> List(AddRow, BlurOnEmptyLast),
-    KeyChord(KeyCode.backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
-    KeyChord(KeyCode.delete)    -> List(DeleteChar.Right),
-    KeyChord(KeyCode.left)      -> List(MoveCursor.Left),
-    KeyChord(KeyCode.right)     -> List(MoveCursor.Right),
-    KeyChord(KeyCode.up)        -> List(MoveCursor.Up),
-    KeyChord(KeyCode.down)      -> List(MoveCursor.Down),
-    KeyChord(KeyCode.space)     -> List(Space),
-    KeyChord(KeyCode.home)      -> List(MoveCursor.RowBegin),
-    KeyChord(KeyCode.end)       -> List(MoveCursor.RowEnd),
-    KeyChord(KeyCode.escape)    -> List(BlurCursor),
-    KeyChord(KeyCode.pageUp)    -> List(Cue.Prev),
-    KeyChord(KeyCode.pageDown)  -> List(Cue.Next)
-  )
+  private val keysToCommands: Map[KeyChord, List[CommandDescription]] = {
+    import KeyCode._
+    import KeyCodes._
+    Map(
+      KeyChord(enter)     -> List(AddRow, BlurOnEmptyLast),
+      KeyChord(backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
+      KeyChord(delete)    -> List(DeleteChar.Right),
+      KeyChord(left)      -> List(MoveCursor.Left),
+      KeyChord(right)     -> List(MoveCursor.Right),
+      KeyChord(up)        -> List(MoveCursor.Up),
+      KeyChord(down)      -> List(MoveCursor.Down),
+      KeyChord(space)     -> List(Space),
+      KeyChord(home)      -> List(MoveCursor.RowBegin),
+      KeyChord(end)       -> List(MoveCursor.RowEnd),
+      KeyChord(escape)    -> List(BlurCursor),
+      KeyChord(pageUp)    -> List(Cue.Prev),
+      KeyChord(pageDown)  -> List(Cue.Next),
+      KeyChord(F1)        -> List(AdjustTiming.TenthBack),
+      KeyChord(F2)        -> List(AdjustTiming.TenthForward),
+      KeyChord(F8)        -> List(TogglePausePlay),
+      KeyChord(NumPad5)   -> List(TogglePausePlay),
+      KeyChord(F7)        -> List(SecondBackward),
+      KeyChord(NumPad1)   -> List(SecondBackward),
+      KeyChord(F9)        -> List(SecondForward),
+      KeyChord(NumPad3)   -> List(SecondForward),
+      KeyChord.Alt(F7)    -> List(TenthBackward),
+      KeyChord(NumPad4)   -> List(TenthBackward),
+      KeyChord.Alt(F9)    -> List(TenthForward),
+      KeyChord(NumPad6)   -> List(TenthForward)
+    )
+  }
 
   override def onKeyDown(chord: KeyChord): Boolean = {
     dom.document.getElementById("status").textContent = ""

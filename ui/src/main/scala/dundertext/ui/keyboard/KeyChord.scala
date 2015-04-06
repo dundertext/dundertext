@@ -11,3 +11,8 @@ final case class KeyChord (
   }
 }
 
+object KeyChord {
+  def Alt(code: Int) = KeyChord(code, alt = true)
+  def Ctrl(code: Int) = KeyChord(code, ctrl = true)
+}
+

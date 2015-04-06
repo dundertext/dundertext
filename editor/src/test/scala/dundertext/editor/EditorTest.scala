@@ -7,13 +7,6 @@ import org.junit.Assert._
 
 class EditorTest extends CommandTestBase {
 
-  class MockPlayer extends Player {
-    override def currentTime: Time = {
-      Time(5000)
-    }
-    override def cue(time: Time) = {}
-  }
-
   @Test
   def should_place_cursor_at_video(): Unit = {
     val editor: Editor = given(
@@ -26,7 +19,9 @@ class EditorTest extends CommandTestBase {
           C
         10000
       """)
-    editor.player = new MockPlayer
+    player.currentTime = Time(5000)
+
+    // when
     editor.placeCursorAtVideo()
 
     // then

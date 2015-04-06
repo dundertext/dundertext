@@ -10,7 +10,7 @@ class GlobalKeyboardHandler extends Keyboard {
   var listeners: Set[KeyboardListener] = Set.empty
 
   def onKeyDown(e: KeyboardEvent): Unit = {
-    val chord = KeyChord(e.keyCode)
+    val chord = KeyChord(e.keyCode, shift = e.shiftKey, ctrl = e.ctrlKey || e.metaKey, alt = e.altKey)
     for (l <- listeners) {
       val handled = l.onKeyDown(chord)
       if (handled) e.preventDefault()
