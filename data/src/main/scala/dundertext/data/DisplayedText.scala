@@ -5,8 +5,9 @@ final case class DisplayedText (
   in: Time,
   length: Length
 ) {
+  val out: Time = Time(in.millis + length.millis)
   def conatins(t: Time): Boolean = {
-    t.millis >= in.millis && t.millis < in.millis + length.millis
+    t.millis >= in.millis && t.millis < out.millis
   }
 }
 

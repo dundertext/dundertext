@@ -12,5 +12,11 @@ class VideoPlayerPresenter(keyboard: Keyboard, panel: VideoPlayerPanel) extends 
 
   def redraw(): Unit = {
     panel.time.textContent = player.currentTime.formatShort
+
+    if (player.until != null && player.currentTime.millis > player.until.millis) {
+      player.pause()
+      player.cue(player.until)
+      player.until = null
+    }
   }
 }

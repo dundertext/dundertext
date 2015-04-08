@@ -19,6 +19,7 @@ abstract class CommandTestBase {
     override def cueEnd() = ???
     override def pause() = playing = false
     override def cueStart() = ???
+    override def playUntil(time: Time) = ???
   }
 
   val player = new MockPlayer

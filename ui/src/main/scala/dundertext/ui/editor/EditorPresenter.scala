@@ -4,7 +4,7 @@ import dundertext.editor.cmd._
 import dundertext.editor._
 import dundertext.ui.keyboard.{KeyCodes, KeyChord, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
-import dundertext.ui.video.VideoPlayerCommand
+import dundertext.ui.video.{PlayCurrent, VideoPlayerCommand}
 import dundertext.ui.video.VideoPlayerCommand._
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
@@ -84,7 +84,7 @@ class EditorPresenter(
       KeyChord(right)     -> List(MoveCursor.Right),
       KeyChord(up)        -> List(MoveCursor.Up),
       KeyChord(down)      -> List(MoveCursor.Down),
-      KeyChord(space)     -> List(Space),
+      KeyChord(space)     -> List(Space, NoSpace, NewTextAtVideo),
       KeyChord(home)      -> List(MoveCursor.RowBegin),
       KeyChord(end)       -> List(MoveCursor.RowEnd),
       KeyChord(escape)    -> List(BlurCursor),
@@ -101,7 +101,9 @@ class EditorPresenter(
       KeyChord.Alt(F7)    -> List(TenthBackward),
       KeyChord(NumPad4)   -> List(TenthBackward),
       KeyChord.Alt(F9)    -> List(TenthForward),
-      KeyChord(NumPad6)   -> List(TenthForward)
+      KeyChord(NumPad6)   -> List(TenthForward),
+      KeyChord(tab)       -> List(PlayCurrent),
+      KeyChord(F10)       -> List(MarkTime)
     )
   }
 

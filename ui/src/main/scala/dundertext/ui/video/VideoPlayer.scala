@@ -6,6 +6,7 @@ import dundertext.data._
 class VideoPlayer(e: html.Video) extends dundertext.editor.Player {
   e.src = "../../../videos/example.webm"
   e.play()
+  var until: Time = _
 
   def isPaused: Boolean = e.paused
   def currentTime: Time = Time.fromSecondsRounded(e.currentTime)
@@ -23,4 +24,10 @@ class VideoPlayer(e: html.Video) extends dundertext.editor.Player {
   def cueEnd(): Unit = e.currentTime = e.duration
 
   def seek(offsetMillis: Int): Unit = e.currentTime += offsetMillis / 1000.0d
+
+  override def playUntil(time: Time): Unit = {
+    until = time
+    play()
+  }
+
 }
