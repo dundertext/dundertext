@@ -18,11 +18,7 @@ object MainLayout {
         ),
 
         div (id:="timelines",
-            table (
-                tr (
-
-                )
-            )
+            canvas()
         ),
 
         div (id:="editors",

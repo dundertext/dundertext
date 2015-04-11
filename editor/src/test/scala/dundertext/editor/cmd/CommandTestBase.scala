@@ -9,6 +9,7 @@ abstract class CommandTestBase {
   class MockPlayer extends Player {
     var playing = false
     var currentTime: Time = _
+    var untilTime: Time = _
     def cue(time: Time): Unit = {
       currentTime = time
     }
@@ -19,7 +20,10 @@ abstract class CommandTestBase {
     override def cueEnd() = ???
     override def pause() = playing = false
     override def cueStart() = ???
-    override def playUntil(time: Time) = ???
+    override def playUntil(time: Time): Unit = {
+      untilTime = time
+      play()
+    }
   }
 
   val player = new MockPlayer

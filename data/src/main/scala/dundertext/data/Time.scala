@@ -27,6 +27,9 @@ final case class Time(millis: Int) {
     f"$hours%02d:$minutes%02d:$seconds%02d.$ms%03d"
   }
 
+  def minus(ms: Int) = Time(millis - ms)
+  def plus(ms: Int) = Time(millis + ms)
+
   override def toString = formatLong
 }
 

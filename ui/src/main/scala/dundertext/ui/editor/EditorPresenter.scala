@@ -4,8 +4,7 @@ import dundertext.editor.cmd._
 import dundertext.editor._
 import dundertext.ui.keyboard.{KeyCodes, KeyChord, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
-import dundertext.ui.video.{PlayCurrent, VideoPlayerCommand}
-import dundertext.ui.video.VideoPlayerCommand._
+import VideoPlayerCommand._
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html

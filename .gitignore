@@ -1,5 +1,6 @@
 target
 videos
+waveform
 *.iml
 .idea
 .DS_Store

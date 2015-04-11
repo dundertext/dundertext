@@ -80,7 +80,7 @@ class DocumentBuffer private () {
       case tn: TimingNode if tn.time.isAfter(time) => tn
       case _ => findAfter(n.next)
     }
-    if (isEmpty) null else findAfter(entries.head)
+    findAfter(entries.head)
   }
 
   def findTextNodeAt(time: Time): TextNode = {

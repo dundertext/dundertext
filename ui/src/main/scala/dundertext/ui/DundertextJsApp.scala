@@ -2,6 +2,7 @@ package dundertext.ui
 
 import dundertext.ui.editor.{EditorPresenter, EditorsPanel}
 import dundertext.ui.keyboard.GlobalKeyboardHandler
+import dundertext.ui.timeline.TimelinePanel
 import dundertext.ui.video.{VideoPlayerPresenter, VideosPanel}
 import org.scalajs.dom
 import org.scalajs.dom.html
@@ -20,5 +21,7 @@ object DundertextJsApp extends JSApp {
 
     val editorsPanel = new EditorsPanel(dom.document.querySelector("#editors tr").asInstanceOf[html.TableRow])
     new EditorPresenter(keyboard, editorsPanel.left, videosPanel.left.display, videosPanel.left.player)
+
+    new TimelinePanel(dom.document.querySelector("#timelines canvas").asInstanceOf[html.Canvas], videosPanel.left.player)
   }
 }

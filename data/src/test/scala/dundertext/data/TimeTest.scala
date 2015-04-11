@@ -16,4 +16,9 @@ class TimeTest {
     val t = Time(0)
     assertEquals("00:00:00.000", t.toString)
   }
+
+  @Test
+  def should_have_end_time(): Unit = {
+    assertTrue(Time.End isAfter Time.Start)
+  }
 }

@@ -1,6 +1,4 @@
-package dundertext.ui.video
-
-import dundertext.editor.cmd.{CommandDescription, SubtitlingCommand}
+package dundertext.editor.cmd
 
 object VideoPlayerCommand {
 
