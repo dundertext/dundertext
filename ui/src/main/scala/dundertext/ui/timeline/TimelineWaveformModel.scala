@@ -7,9 +7,10 @@ import TimelineWaveformModel._
  * Models one or two images drawn with an offset from the left margin
  * to simulate a horizontal scrolling waveform.
  */
-case class TimelineWaveformModel (
+final case class TimelineWaveformModel (
   left: Img,
-  right: Img
+  right: Img,
+  leftEdgeMillis: Int
 ) {
   def isSingle: Boolean = left.minute == right.minute
   def isDouble: Boolean = !isSingle
@@ -21,7 +22,7 @@ object TimelineWaveformModel {
   final val MillisPerPixel = ImgWavDuration / ImgWidthPx
   final val PixelsPerMs = ImgWidthPx.toDouble / ImgWavDuration.toDouble
 
-  case class Img (minute: Int, pixOffset: Int) {
+  final case class Img (minute: Int, pixOffset: Int) {
     def src: String =
       if (minute < 0)       ""
       else if (minute < 10) "waveform/0"+minute+".png"
@@ -42,9 +43,10 @@ object TimelineWaveformModel {
 
     TimelineWaveformModel(
       left = img(leftEdgeMillis, 0),
-      right = img(rightEdgeMillis, width)
+      right = img(rightEdgeMillis, width),
+      leftEdgeMillis = leftEdgeMillis
     )
   }
 
-  def empty = TimelineWaveformModel(Img(-1, -1), Img(-1, -1))
+  def empty = TimelineWaveformModel(Img(-1, -1), Img(-1, -1), -1)
 }

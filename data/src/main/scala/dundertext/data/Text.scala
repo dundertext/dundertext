@@ -2,4 +2,6 @@ package dundertext.data
 
 final case class Text (
   rows: List[Row]
-) extends Entry
+) extends Entry {
+  def text = rows.map(_.text).mkString("\n")
+}

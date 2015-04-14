@@ -20,8 +20,9 @@ object DundertextJsApp extends JSApp {
     new VideoPlayerPresenter(keyboard, videosPanel.left)
 
     val editorsPanel = new EditorsPanel(dom.document.querySelector("#editors tr").asInstanceOf[html.TableRow])
-    new EditorPresenter(keyboard, editorsPanel.left, videosPanel.left.display, videosPanel.left.player)
+    val editorPresenter = new EditorPresenter(keyboard, editorsPanel.left, videosPanel.left.display, videosPanel.left.player)
 
-    new TimelinePanel(dom.document.querySelector("#timelines canvas").asInstanceOf[html.Canvas], videosPanel.left.player)
+    new TimelinePanel(dom.document.querySelector("#timelines canvas").asInstanceOf[html.Canvas],
+      videosPanel.left.player, editorPresenter.editor)
   }
 }
