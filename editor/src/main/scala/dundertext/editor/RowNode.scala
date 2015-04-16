@@ -55,9 +55,22 @@ class RowNode {
   def asSpans(): List[Span] =
     (spans map (_.build()))(breakOut)
 
+  def clear(): Unit = {
+    spans.clear()
+  }
+
   def append(ss: List[Span]): Unit = {
     spans.appendAll(ss map SpanNode.from)
     relink()
+  }
+
+  def set(row: Row): Unit = {
+    clear()
+    append(row.spans)
+  }
+
+  def trim(): Unit = {
+    spans.last.trimRight()
   }
 
   def build(): Row = {
@@ -68,9 +81,7 @@ class RowNode {
 object RowNode {
   def from(row: Row): RowNode = {
     val r = new RowNode
-    val spanNodes: List[SpanNode] = row.spans map SpanNode.from
-    r.spans appendAll spanNodes
-    r.relink()
+    r.append(row.spans)
     r
   }
 }

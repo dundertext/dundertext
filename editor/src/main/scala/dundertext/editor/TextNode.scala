@@ -24,7 +24,7 @@ class TextNode private() extends DocumentNode {
     this
   }
 
-  def insertRow(prevRow: RowNode, newRow: RowNode): Unit = {
+  def insertRowAfter(prevRow: RowNode, newRow: RowNode): Unit = {
     val pos = rows.indexOf(prevRow)
     rows.insert(pos + 1, newRow)
     relink()

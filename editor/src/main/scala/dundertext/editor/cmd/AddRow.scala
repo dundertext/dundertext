@@ -9,12 +9,12 @@ object AddRow extends CommandDescription {
 
 class AddRow extends SubtitlingCommand {
   override def applies: Boolean = {
-    cursor.row.hasText
+    cursor.row.hasText && cursor.isAtEndOfRow
   }
 
   override def execute(): Unit = {
     val newRow = RowNode.from(Row(List(Span(""))))
-    cursor.text.insertRow(cursor.row, newRow)
+    cursor.text.insertRowAfter(cursor.row, newRow)
     cursor.moveTo(newRow)
   }
 }

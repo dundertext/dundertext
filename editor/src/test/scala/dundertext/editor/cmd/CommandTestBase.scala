@@ -79,4 +79,19 @@ abstract class CommandTestBase {
     actual.insert(editor.cursor.pos, '╎')
     assertEquals(expected, actual.result())
   }
+
+  def assertRows(expected: String)(implicit editor: Editor): Unit = {
+    val e = expected.trim.lines.map(_.trim).mkString("\n")
+    val actual = new TestDataFormatter(editor).format().trim.lines.map(_.trim).mkString("\n")
+    assertEquals(e, actual)
+  }
 }
+
+class TestDataFormatter(editor: Editor) extends EditorFormatter(editor) {
+  override def writeTextAtCursor(s: String, pos: Int) = {
+    sb.append(s.take(pos))
+    sb.append('╎')
+    sb.append(s.drop(pos))
+  }
+}
+

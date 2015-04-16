@@ -76,7 +76,7 @@ class EditorPresenter(
     import KeyCode._
     import KeyCodes._
     Map(
-      KeyChord(enter)     -> List(AddRow, BlurOnEmptyLast),
+      KeyChord(enter)     -> List(AddRow, BlurOnEmptyLast, SplitRow),
       KeyChord(backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
       KeyChord(delete)    -> List(DeleteChar.Right),
       KeyChord(left)      -> List(MoveCursor.Left),

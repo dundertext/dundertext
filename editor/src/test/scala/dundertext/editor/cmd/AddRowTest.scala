@@ -9,6 +9,7 @@ class AddRowTest extends CommandTestBase {
   @Test
   def should_add_row_below(): Unit = {
     val editor = subtitleWithSingleRow
+    editor.cursor.moveRowEnd()
 
     val cmd = new AddRow()
     editor.execute(cmd)

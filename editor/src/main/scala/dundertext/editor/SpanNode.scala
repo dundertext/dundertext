@@ -1,6 +1,7 @@
 package dundertext.editor
 
 import dundertext.data.Span
+import SpanNode._
 
 class SpanNode {
   var parent: RowNode = _
@@ -26,10 +27,21 @@ class SpanNode {
 
   def length: Int = text.length
 
+  def trimLeft(): Unit = {
+    text = LeftTrim.replaceFirstIn(text, "")
+  }
+
+  def trimRight(): Unit = {
+    text = RightTrim.replaceFirstIn(text, "")
+  }
+
   def build() = Span(text)
 }
 
 object SpanNode {
+  final val LeftTrim = """^\s+""".r
+  final val RightTrim = """\s+$""".r
+
   def from(span: Span) = {
     val r = new SpanNode
     r.text = span.text
