@@ -4,11 +4,12 @@ Dundertext
 Web based subtitle editor
 
 Build
-------
+-----
 
 ```bash
 sbt fullOptJS
-open ui/index.html
+nginx -c `pwd`/nginx.conf 
+chrome http://localhost:8000
 ```
 
 Licence
