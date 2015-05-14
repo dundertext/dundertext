@@ -1,10 +1,11 @@
 package dundertext.editor.cmd
 
-import dundertext.editor.{Player, Editor}
+import dundertext.editor.{DocumentPatch, Player, Editor}
 
 abstract class SubtitlingCommand {
   protected var editor: Editor = _
   protected var player: Player = _
+  var patch: List[DocumentPatch] = Nil
 
   def applies: Boolean = true
   def execute(): Unit

@@ -3,11 +3,14 @@ package dundertext.editor
 import dundertext.editor.cmd.{CommandDescription, SubtitlingCommand}
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 
 class Editor private() {
   var buffer: DocumentBuffer = _
   var cursor: Cursor = new Cursor
   var player: Player = _
+  val log = mutable.Buffer[DocumentPatch]()
+  var idCounter: Int = 0
 
   @tailrec
   final def execute(cds: List[CommandDescription]): Unit = cds match {
@@ -15,19 +18,22 @@ class Editor private() {
     case cd :: rest =>
       val cmd: SubtitlingCommand = cd.apply()
       cmd.link(this, player)
-      if (cmd.applies) {
-        println("Executing " + cmd)
-        cmd.execute()
-      } else
+      if (cmd.applies)
+        doExecute(cmd)
+      else
         execute(rest)
   }
 
   def execute(cmd: SubtitlingCommand): Unit = {
     cmd.link(this, player)
-    if (cmd.applies) {
-      println("Executing " + cmd)
-      cmd.execute()
-    }
+    if (cmd.applies)
+      doExecute(cmd)
+  }
+
+  private def doExecute(cmd: SubtitlingCommand): Unit = {
+    println("Executing " + cmd)
+    cmd.execute()
+    log ++= cmd.patch
   }
 
   def focusBeginning(): Unit = {
@@ -37,6 +43,11 @@ class Editor private() {
   def placeCursorAtVideo(): Unit = {
     val textNode = buffer.findTextNodeAt(player.currentTime)
     cursor.moveTo(textNode)
+  }
+
+  def newId(): String = {
+    idCounter += 1
+    String.valueOf(idCounter)
   }
 }
 

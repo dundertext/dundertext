@@ -65,7 +65,7 @@ class TextNode private() extends DocumentNode {
   }
 
   def build(): Text = {
-    Text((rows map (_.build()))(breakOut))
+    Text(id, (rows map (_.build()))(breakOut))
   }
 
   def recalcDisplay(): Unit = {

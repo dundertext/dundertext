@@ -3,6 +3,7 @@ package dundertext.editor
 import dundertext.data.Time
 
 abstract class DocumentNode {
+  var id: String = _
   var prev: DocumentNode = _
   var next: DocumentNode = _
 
@@ -26,5 +27,10 @@ abstract class DocumentNode {
     case tmn: TimingNode if tmn.time == Time.End => null
     case tmn: TimingNode => next.nextText
     case txn: TextNode => txn
+  }
+
+  def withId(id: String): this.type = {
+    this.id = id
+    this
   }
 }

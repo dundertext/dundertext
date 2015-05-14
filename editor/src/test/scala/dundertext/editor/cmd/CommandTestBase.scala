@@ -49,10 +49,10 @@ abstract class CommandTestBase {
     val editor = Editor(buffer)
     editor.player = player
 
-    var textNode = TextNode.empty
+    var textNode = TextNode.empty.withId(editor.newId())
     def finishNode(): Unit = {
       if (textNode.hasText) buffer.append(textNode)
-      textNode = TextNode.empty
+      textNode = TextNode.empty.withId(editor.newId())
     }
 
     for (line <- document.stripMargin.trim.lines.map(_.trim)) {
@@ -60,7 +60,7 @@ abstract class CommandTestBase {
         finishNode()
       } else if (line.charAt(0).isDigit) {
         finishNode()
-        buffer.append(TimingNode(Time(line.toInt)))
+        buffer.append(TimingNode(Time(line.toInt)).withId(editor.newId()))
       } else {
         val cursor = line.indexOf('╎')
         textNode.append(line.replace("╎",""))

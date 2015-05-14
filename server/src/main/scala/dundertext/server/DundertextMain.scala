@@ -20,7 +20,7 @@ class DundertextMain {
 
   def handler(req: HttpRequest): HttpResponse = {
     req.uri match {
-      case Uri.Path("/command") => commandHandler.handle(req)
+      case Uri.Path("/api/document") => commandHandler.handle(req)
       case _ => HttpResponse(404, entity = "Not found")
     }
   }

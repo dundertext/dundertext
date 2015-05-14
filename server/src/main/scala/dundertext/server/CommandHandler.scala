@@ -15,10 +15,13 @@ class CommandHandler(implicit val materializer: FlowMaterializer) {
   d.toFile.mkdirs()
   val f = d.resolve("document.tsv")
 
+  val doc = new MasterDocument
+
   def save(entity: RequestEntity): Unit = {
     val body: ByteString = Await.result(entity.toStrict(1.second), 1.second).data
     Files.write(f, body.toArray, StandardOpenOption.CREATE, StandardOpenOption.APPEND)
     println (body.utf8String)
+    doc.handle(body.utf8String)
   }
 
   def handle(req: HttpRequest): HttpResponse = req.method match {

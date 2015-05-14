@@ -1,3 +1,5 @@
 package dundertext.data
 
-trait Entry
+trait Entry {
+  def id: String
+}

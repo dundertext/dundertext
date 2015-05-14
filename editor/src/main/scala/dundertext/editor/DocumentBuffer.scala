@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 class DocumentBuffer private () {
   val entries: mutable.Buffer[DocumentNode] =
-    mutable.Buffer(TimingNode(Time.Start), TimingNode(Time.End))
+    mutable.Buffer(TimingNode(Time.Start).withId("START"), TimingNode(Time.End).withId("END"))
 
   def insertBefore(node: DocumentNode, pos: DocumentNode): Unit = {
     val idx = entries.indexOf(pos)
@@ -87,6 +87,12 @@ class DocumentBuffer private () {
     val after = findNodeAfter(time)
     after.prevText
   }
+
+  def getNodeById(id: String): DocumentNode =
+    entries.find(_.id == id).orNull
+
+  def getTextNodeById(id: String): TextNode =
+    getNodeById(id).asInstanceOf[TextNode]
 
   override def toString = asText
 }

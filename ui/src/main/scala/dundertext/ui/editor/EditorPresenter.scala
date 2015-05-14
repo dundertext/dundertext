@@ -5,6 +5,7 @@ import dundertext.editor._
 import dundertext.ui.keyboard.{KeyCodes, KeyChord, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
 import VideoPlayerCommand._
+import dundertext.ui.sync.Sync
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
@@ -13,6 +14,7 @@ import scala.collection.breakOut
 
 class EditorPresenter(
     keyboard: Keyboard,
+    sync: Sync,
     panel: EditorPanel,
     svgDisplay: SvgDisplay,
     player: Player
@@ -24,6 +26,7 @@ class EditorPresenter(
   editor.player = player
   panel.display("")
   dom.setInterval(redrawVideo _, 100)
+  sync.setEditor(editor)
   // end init
 
   override def onKeyPress(char: Char): Boolean = {
