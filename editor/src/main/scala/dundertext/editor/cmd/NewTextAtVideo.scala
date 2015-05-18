@@ -1,6 +1,6 @@
 package dundertext.editor.cmd
 
-import dundertext.editor.{AddTimingPatch, AddTextPatch, TimingNode, TextNode}
+import dundertext.editor.{TextNode, TimingNode}
 
 object NewTextAtVideo extends CommandDescription {
   def apply() = new NewTextAtVideo
@@ -12,14 +12,10 @@ object NewTextAtVideo extends CommandDescription {
 class NewTextAtVideo extends SubtitlingCommand {
   override def execute(): Unit = {
     val insertPos: TimingNode = buffer.findNodeAfter(player.currentTime)
-
-    val p1 = AddTimingPatch(editor.newId(), insertPos.id, player.currentTime)
-    val p2 = AddTextPatch(editor.newId(), insertPos.id)
-    patch = List(p1, p2)
-    p1.apply(buffer)
-    p2.apply(buffer)
-
-    val t: TextNode = buffer.getTextNodeById(p2.id)
-    cursor.moveTo(t)
+    val tmn = TimingNode(player.currentTime).withId(editor.newId())
+    buffer.insertBefore(tmn, insertPos)
+    val txn = TextNode.empty.withId(editor.newId())
+    buffer.insertBefore(txn, insertPos)
+    cursor.moveTo(txn)
   }
 }

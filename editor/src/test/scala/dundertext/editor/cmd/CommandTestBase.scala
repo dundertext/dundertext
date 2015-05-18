@@ -70,6 +70,7 @@ abstract class CommandTestBase {
       }
     }
     finishNode()
+    buffer.relink()
 
     editor
   }

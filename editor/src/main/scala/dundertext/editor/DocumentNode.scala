@@ -6,6 +6,7 @@ abstract class DocumentNode {
   var id: String = _
   var prev: DocumentNode = _
   var next: DocumentNode = _
+  var synced: Boolean = false
 
   def prevTime: TimingNode = prev match {
     case tmn: TimingNode => tmn

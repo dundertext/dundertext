@@ -1,6 +1,9 @@
 package dundertext.editor.cmd
 
 class TypeText(text: String) extends SubtitlingCommand {
+
+  override def relinks: Boolean = false
+
   override def applies = {
     !text.trim.isEmpty
   }

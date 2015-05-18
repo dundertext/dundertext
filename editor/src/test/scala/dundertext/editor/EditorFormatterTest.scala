@@ -15,6 +15,7 @@ class EditorFormatterTest {
     buffer.append(Time(1500))
     buffer.append("Två")
     buffer.append(Time(2000))
+    buffer.relink()
     val txt: String = new EditorFormatter(editor).format()
     assertEquals(
       """  Ett

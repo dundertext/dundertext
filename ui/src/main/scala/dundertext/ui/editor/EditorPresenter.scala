@@ -34,7 +34,6 @@ class EditorPresenter(
       editor.execute(new NewTextAtVideo)
 
     editor.execute(new TypeText(char.toString))
-    editor.buffer.relink()
     redraw()
 
     true

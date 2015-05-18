@@ -16,6 +16,7 @@ class DocumentBufferTest {
   @Test
   def should_append_text(): Unit = {
     buffer.append("Hejsan")
+    buffer.relink()
     assertEquals(1, buffer.length)
     assertEquals("Hejsan\n\n", buffer.asText)
   }
@@ -24,6 +25,7 @@ class DocumentBufferTest {
   def should_append_multiple_text(): Unit = {
     buffer.append("Hejsan")
     buffer.append("Svejsan")
+    buffer.relink()
     assertEquals(2, buffer.length)
     assertEquals(
       "Hejsan\n\n" +

@@ -13,7 +13,6 @@ class MarkTime extends SubtitlingCommand {
     val t = player.currentTime
     val tn = TimingNode(t)
     buffer.insertBefore(tn, insertPos)
-    buffer.relink()
     player.cue(cursor.text.display.out.minus(1))
   }
 }

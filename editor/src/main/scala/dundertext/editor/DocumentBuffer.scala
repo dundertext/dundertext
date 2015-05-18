@@ -14,6 +14,11 @@ class DocumentBuffer private () {
     entries.insert(idx, node)
   }
 
+  def insertAfter(node: DocumentNode, pos: DocumentNode): Unit = {
+    val idx = entries.indexOf(pos)
+    entries.insert(1+idx, node)
+  }
+
   def firstText: TextNode =
     entries.head.nextText
 
@@ -41,7 +46,6 @@ class DocumentBuffer private () {
 
   def append(t: DocumentNode): this.type = {
     entries.insert(entries.size - 1, t)
-    relink()
     this
   }
 
@@ -88,8 +92,11 @@ class DocumentBuffer private () {
     after.prevText
   }
 
+  def findNodeById(id: String): Option[DocumentNode] =
+    entries.find(_.id == id)
+
   def getNodeById(id: String): DocumentNode =
-    entries.find(_.id == id).orNull
+    findNodeById(id).orNull
 
   def getTextNodeById(id: String): TextNode =
     getNodeById(id).asInstanceOf[TextNode]

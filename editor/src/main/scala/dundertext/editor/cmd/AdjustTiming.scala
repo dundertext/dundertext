@@ -13,7 +13,6 @@ object AdjustTiming {
       val t = cursor.text.prevTime
       if (player.isPaused && player.currentTime == t.time) {
         t.time = Time(t.time.millis - 100)
-        buffer.relink()
       } else {
         player.pause()
       }
@@ -33,7 +32,6 @@ object AdjustTiming {
         player.pause()
       } else {
         t.time = Time(t.time.millis + 100)
-        buffer.relink()
       }
 
       player.cue(t.time)
