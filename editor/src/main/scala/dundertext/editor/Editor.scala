@@ -29,7 +29,6 @@ class Editor private() {
   }
 
   private def doExecute(cmd: SubtitlingCommand): Unit = {
-    println("Executing " + cmd)
     cmd.execute()
     if (cursor.isAtText)
       cursor.text.synced = false
