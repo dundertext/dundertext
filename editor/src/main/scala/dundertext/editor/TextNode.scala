@@ -49,10 +49,12 @@ class TextNode private() extends DocumentNode {
     }
   }
 
-  def text: String = {
+  def text: String = text('\n')
+
+  def text(sep: Char): String = {
     val sb = new StringBuilder
     for (row <- rows) {
-      sb.append(row.text).append('\n')
+      sb.append(row.text).append(sep)
     }
     sb.result()
   }

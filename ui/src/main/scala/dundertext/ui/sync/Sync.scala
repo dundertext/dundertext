@@ -42,10 +42,11 @@ class Sync {
   }
 
   def syncText(now: TextNode, oldO: Option[TextNode]): Unit = {
+    val US = '\u001f'
     oldO match {
-      case Some(old)  => sync(TextPatch(now.id, old.text, now.text))
+      case Some(old)  => sync(TextPatch(now.id, old.text(US), now.text(US)))
       case None       => sync(AddTextPatch(now.id, now.prev.id))
-                         sync(TextPatch(now.id, "", now.text))
+                         sync(TextPatch(now.id, "", now.text(US)))
     }
   }
 
@@ -59,16 +60,14 @@ class Sync {
   def sync(patch: DocumentPatch): Unit = {
     println(patch.serialize)
     println("----------------------------")
-    patchQueue.append(patch.serialize).append('\u001e')
+    patchQueue.append(patch.serialize).append("\n")
   }
 
   def finishSync(): Unit = {
     if (patchQueue.nonEmpty) {
       println("POST")
-      activeRequest = Ajax.post("/api/document", patchQueue.result())
-      activeRequest.onComplete { _ =>
-        activeRequest = null
-      }
+      activeRequest = Ajax.apply("PATCH", "/api/document/ABC", patchQueue.result(), 0, Map.empty, false, "")
+      activeRequest.onComplete { _ => activeRequest = null }
       patchQueue.clear()
     }
   }
