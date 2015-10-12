@@ -2,7 +2,7 @@ organization            := "dundertext"
 name                    := "Dundertext"
 version in ThisBuild    := "1.0-SNAPSHOT"
 
-scalaVersion in ThisBuild := "2.11.6"
+scalaVersion in ThisBuild := "2.11.7"
 crossPaths in ThisBuild   := false
 
 incOptions := incOptions.value.withNameHashing(true)

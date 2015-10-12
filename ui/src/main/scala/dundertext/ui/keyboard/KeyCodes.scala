@@ -12,18 +12,6 @@ object KeyCodes {
   final val NumPad8 = 104
   final val NumPad9 = 105
 
-  final val F1 = 112
-  final val F2 = 113
-  final val F3 = 114
-  final val F4 = 115
-  final val F5 = 116
-  final val F6 = 117
-  final val F7 = 118
-  final val F8 = 119
-  final val F9 = 120
-  final val F10 = 121
-  final val F11 = 122
-  final val F12 = 123
   final val F13 = 124
   final val F14 = 125
   final val F15 = 126

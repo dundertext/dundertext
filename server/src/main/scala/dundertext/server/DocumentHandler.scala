@@ -1,14 +1,14 @@
 package dundertext.server
 
 import akka.http.scaladsl.model._
-import akka.stream.FlowMaterializer
+import akka.stream.ActorMaterializer
 import dundertext.editor.DocumentPatch
 import dundertext.server.Timeout.TO
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DocumentHandler(documentsActor: DocumentsActor.Ref)(
-    implicit val materializer: FlowMaterializer,
+    implicit val materializer: ActorMaterializer,
     implicit val ec: ExecutionContext
 ) {
 

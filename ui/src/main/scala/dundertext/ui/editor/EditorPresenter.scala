@@ -78,19 +78,19 @@ class EditorPresenter(
     import KeyCode._
     import KeyCodes._
     Map(
-      KeyChord(enter)     -> List(AddRow, BlurOnEmptyLast, SplitRow),
-      KeyChord(backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
-      KeyChord(delete)    -> List(DeleteChar.Right),
-      KeyChord(left)      -> List(MoveCursor.Left),
-      KeyChord(right)     -> List(MoveCursor.Right),
-      KeyChord(up)        -> List(MoveCursor.Up),
-      KeyChord(down)      -> List(MoveCursor.Down),
-      KeyChord(space)     -> List(Space, NoSpace, NewTextAtVideo),
-      KeyChord(home)      -> List(MoveCursor.RowBegin),
-      KeyChord(end)       -> List(MoveCursor.RowEnd),
-      KeyChord(escape)    -> List(BlurCursor),
-      KeyChord(pageUp)    -> List(Cue.Prev),
-      KeyChord(pageDown)  -> List(Cue.Next),
+      KeyChord(Enter)     -> List(AddRow, BlurOnEmptyLast, SplitRow),
+      KeyChord(Backspace) -> List(DeleteChar.Left, MergeRows, DeleteRow),
+      KeyChord(Delete)    -> List(DeleteChar.Right),
+      KeyChord(Left)      -> List(MoveCursor.Left),
+      KeyChord(Right)     -> List(MoveCursor.Right),
+      KeyChord(Up)        -> List(MoveCursor.Up),
+      KeyChord(Down)      -> List(MoveCursor.Down),
+      KeyChord(Space)     -> List(AddSpace, NoSpace, NewTextAtVideo),
+      KeyChord(Home)      -> List(MoveCursor.RowBegin),
+      KeyChord(End)       -> List(MoveCursor.RowEnd),
+      KeyChord(Escape)    -> List(BlurCursor),
+      KeyChord(PageUp)    -> List(Cue.Prev),
+      KeyChord(PageDown)  -> List(Cue.Next),
       KeyChord(F1)        -> List(AdjustTiming.TenthBack),
       KeyChord(F2)        -> List(AdjustTiming.TenthForward),
       KeyChord(F8)        -> List(TogglePausePlay),
@@ -103,7 +103,7 @@ class EditorPresenter(
       KeyChord(NumPad4)   -> List(TenthBackward),
       KeyChord.Alt(F9)    -> List(TenthForward),
       KeyChord(NumPad6)   -> List(TenthForward),
-      KeyChord(tab)       -> List(PlayCurrent),
+      KeyChord(Tab)       -> List(PlayCurrent),
       KeyChord(F10)       -> List(MarkTime)
     )
   }

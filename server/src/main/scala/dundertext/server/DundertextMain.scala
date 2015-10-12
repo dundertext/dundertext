@@ -2,7 +2,7 @@ package dundertext.server
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.ActorFlowMaterializer
+import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Sink, Source}
 
 import scala.concurrent.Future
@@ -10,7 +10,7 @@ import scala.concurrent.Future
 class DundertextMain {
   implicit val system = ActorSystem("Dundertext")
   implicit val ec = system.dispatcher
-  implicit val materializer = ActorFlowMaterializer()
+  implicit val materializer = ActorMaterializer()
   val documentsActor: DocumentsActor.Ref = DocumentsActor.create()
   val documentHandler = new DocumentHandler(documentsActor)
 

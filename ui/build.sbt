@@ -4,7 +4,7 @@ enablePlugins(ScalaJSPlugin)
 //
 //ScalaJSKeys.persistLauncher in Test := false
 
-libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
+libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.2"
 
 libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.5.2"
 

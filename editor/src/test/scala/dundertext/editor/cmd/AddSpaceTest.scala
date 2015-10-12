@@ -3,7 +3,7 @@ package dundertext.editor.cmd
 import org.junit.Assert._
 import org.junit.Test
 
-class SpaceTest extends CommandTestBase {
+class AddSpaceTest extends CommandTestBase {
 
   @Test
   def should_insert_space(): Unit = {
@@ -12,7 +12,7 @@ class SpaceTest extends CommandTestBase {
     """)
 
     // when
-    def cmd = new Space
+    def cmd = new AddSpace
     editor.execute(cmd)
 
     // then
@@ -26,7 +26,7 @@ class SpaceTest extends CommandTestBase {
     """)
 
     // when
-    def cmd = new Space
+    def cmd = new AddSpace
     editor.execute(cmd)
 
     // then
@@ -40,7 +40,7 @@ class SpaceTest extends CommandTestBase {
     """)
 
     // when
-    def cmd = new Space
+    def cmd = new AddSpace
     editor.execute(cmd)
 
     // then should only move cursor
@@ -54,7 +54,7 @@ class SpaceTest extends CommandTestBase {
     """)
 
     // when
-    def cmd = new Space
+    def cmd = new AddSpace
     editor.execute(cmd)
 
     // then
