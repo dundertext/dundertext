@@ -21,5 +21,6 @@ scalacOptions in ThisBuild ++= Seq(
 
 lazy val `data`   = project
 lazy val `editor` = project.dependsOn(`data`)
+lazy val `format` = project.dependsOn(`data`)
 lazy val `ui`     = project.dependsOn(`editor`)
 lazy val `server` = project.dependsOn(`editor`)

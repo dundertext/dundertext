@@ -37,9 +37,23 @@ object Time {
   final val Start = Time(0)
   final val End = Time(Int.MaxValue)
 
+  private final val IsoPattern = """(\d\d?):(\d\d):(\d\d)\.(\d\d\d)""".r
+
   def fromSeconds(secs: Double): Time =
     Time((secs * 1000.0d).toInt)
 
   def fromSecondsRounded(secs: Double): Time =
     Time(((secs * 1000.0d).toInt / 100) * 100)
+
+  def fromParts(h: Int, m: Int, s: Int, ms: Int): Time = {
+    require(h >= 0 && h <= 23, s"$h is not a valid hour")
+    require(m >= 0 && m <= 59, s"$m is not a valid minute")
+    require(m >= 0 && m <= 59, s"$ms is not a valid millisecond")
+    Time(h*60*60*1000 + m*60*1000 + s*1000 + ms)
+  }
+
+  def parse(input: String): Time = input match {
+    case IsoPattern(h, m, s, ms) => fromParts(h.toInt, m.toInt, s.toInt, ms.toInt)
+    case _ => throw new IllegalArgumentException(s"$input is not a valid time")
+  }
 }
