@@ -2,6 +2,7 @@ package dundertext.server
 
 import akka.actor.Actor
 import dundertext.editor.DocumentPatch
+import dundertext.server.store.FileStore
 
 import scala.concurrent.Promise
 
@@ -15,9 +16,12 @@ class DocumentActor extends Actor with DocumentActorState {
 
 trait DocumentActorState {
   private val doc = new MasterDocument
+  private val store = new FileStore()
 
   protected def patch(patches: Seq[DocumentPatch]): Unit = {
     patches foreach doc.handle
+    store.put(doc.buffer.build().copy(id = "TEST"))
+    store.log("TEST", patches)
     println (doc.buffer)
   }
 }

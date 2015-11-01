@@ -1,8 +1,10 @@
 package dundertext.editor
 
-import dundertext.data.Time
+import dundertext.data.{Entry, Time}
 
 abstract class DocumentNode {
+  def build(): Entry
+
   var id: String = _
   var prev: DocumentNode = _
   var next: DocumentNode = _

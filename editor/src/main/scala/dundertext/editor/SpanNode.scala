@@ -47,4 +47,10 @@ object SpanNode {
     r.text = span.text
     r
   }
+
+  def from(span: String) = {
+    val r = new SpanNode
+    r.text = span
+    r
+  }
 }

@@ -1,19 +1,30 @@
 package dundertext.format
 
+import java.nio.charset.Charset
+
 import dundertext.data._
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 object SrtFormat {
+  private final val CP_1252 = Charset.forName("cp1252")
 
-  def read(input: String): Document = {
+  def readString(input: String): Document = {
     val srt: Srt.File = Srt.parse(input)
     convert(srt)
   }
 
-  def write(doc: Document): String = {
+  def writeString(doc: Document): String = {
     val srt: Srt.File = convert(doc)
     srt.write()
+  }
+
+  def readBytes(bs: Array[Byte]): Document = {
+    readString(new String(bs, CP_1252))
+  }
+
+  def writeBytes(doc: Document): Array[Byte] = {
+    writeString(doc).getBytes(CP_1252)
   }
 
   def convert(srt: Srt.File): Document = {

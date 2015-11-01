@@ -84,4 +84,10 @@ object RowNode {
     r.append(row.spans)
     r
   }
+
+  def from(row: String): RowNode = {
+    val r = new RowNode
+    r.spans += SpanNode.from(row)
+    r
+  }
 }

@@ -38,15 +38,15 @@ class Sync {
       }
       n.synced = true
     }
+
     finishSync()
   }
 
   def syncText(now: TextNode, oldO: Option[TextNode]): Unit = {
-    val US = '\u001f'
     oldO match {
-      case Some(old)  => sync(TextPatch(now.id, old.text(US), now.text(US)))
+      case Some(old)  => sync(TextPatch(now.id, old.text, now.text))
       case None       => sync(AddTextPatch(now.id, now.prev.id))
-                         sync(TextPatch(now.id, "", now.text(US)))
+                         sync(TextPatch(now.id, "", now.text))
     }
   }
 
@@ -58,6 +58,7 @@ class Sync {
   }
 
   def sync(patch: DocumentPatch): Unit = {
+    patch.apply(syncedBuffer)
     println(patch.serialize)
     println("----------------------------")
     patchQueue.append(patch.serialize).append("\n")

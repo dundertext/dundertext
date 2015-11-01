@@ -25,5 +25,9 @@ final case class Row (
     }
     (Row(left.result()), Row(right.result()))
   }
+}
 
+object Row {
+  def of(text: String) =
+    Row(List(Span(text)))
 }

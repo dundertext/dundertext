@@ -1,6 +1,6 @@
 package dundertext.editor
 
-import dundertext.data.Time
+import dundertext.data.{Entry, Document, Time}
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -100,6 +100,12 @@ class DocumentBuffer private () {
 
   def getTextNodeById(id: String): TextNode =
     getNodeById(id).asInstanceOf[TextNode]
+
+  def build(): Document = {
+    val b = List.newBuilder[Entry]
+    for (e <- entries) b += e.build()
+    Document.forEntries(b.result())
+  }
 
   override def toString = asText
 }

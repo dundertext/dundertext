@@ -12,7 +12,7 @@ class SrtFormatTest  {
     val input = ""
 
     // when
-    val doc: Document = SrtFormat.read(input)
+    val doc: Document = SrtFormat.readString(input)
 
     // then
     assertTrue(doc.entries.isEmpty)
@@ -28,7 +28,7 @@ class SrtFormatTest  {
       """.stripMargin
 
     // when
-    val doc: Document = SrtFormat.read(input)
+    val doc: Document = SrtFormat.readString(input)
 
     // then
     assertEquals("0:05.4", doc.entries(0).asInstanceOf[Timing].value.formatShort)
@@ -50,7 +50,7 @@ class SrtFormatTest  {
         |""".stripMargin
 
     // when
-    val doc: Document = SrtFormat.read(input)
+    val doc: Document = SrtFormat.readString(input)
 
     // then
     assertEquals("0:11.0", doc.entries(3).asInstanceOf[Timing].value.formatShort)
@@ -72,7 +72,7 @@ class SrtFormatTest  {
     ))
 
     // when
-    val srt: String = SrtFormat.write(doc)
+    val srt: String = SrtFormat.writeString(doc)
 
     // then
     assertEquals("""1
