@@ -6,8 +6,6 @@ enablePlugins(ScalaJSPlugin)
 
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.2"
 
-libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.5.3"
-
 unmanagedSourceDirectories in Compile += baseDirectory.value / "../data/src/main/scala"
 
 unmanagedSourceDirectories in Compile += baseDirectory.value / "../editor/src/main/scala"

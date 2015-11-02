@@ -1,39 +1,30 @@
 package dundertext.ui
 
-import scalatags.Text.all._
-
 object MainLayout {
-
-  def page =
-    body (
-        input (id:="blur"),
-        h1 ("Dundertext"),
-
-        div (id:="videos",
-            table (
-                tr (
-
-                )
-            )
-        ),
-
-        div (id:="timelines",
-            canvas()
-        ),
-
-        div (id:="editors",
-            table (
-                tr (
-
-                )
-            )
-        ),
-
-        footer (
-            span(cls:="version",
-                "Dundertext v 0.2"
-            ),
-            span(id:="status", "Started")
-        )
-    )
+  def page: String =
+    "<body>" +
+        "<input id='blur'></input>" +
+        "<h1>Dundertext</h1>" +
+        "<div id='videos'>" +
+            "<table>" +
+                "<tr></tr>" +
+            "</table>" +
+        "</div>" +
+        "" +
+        "<div id='timelines'>" +
+            "<canvas></canvas>" +
+        "</div>" +
+        "" +
+        "<div id='editors'>" +
+            "<table>" +
+                "<tr></tr>" +
+            "</table>" +
+        "</div>" +
+        "" +
+        "<footer>" +
+            "<span class='version'>Dundertext v 0.2</span>" +
+            "<span id='status'>Started</span>" +
+        "</footer>" +
+        "" +
+    "</body>"
 }

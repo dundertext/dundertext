@@ -2,8 +2,7 @@ package dundertext.ui.editor
 
 import dundertext.editor.{Editor, EditorFormatter}
 import dundertext.ui.editor.EditorHtmlFormatter._
-
-import scalatags.Escaping
+import dundertext.ui.util.Html
 
 class EditorHtmlFormatter(editor: Editor) extends EditorFormatter(editor) {
 
@@ -29,7 +28,7 @@ class EditorHtmlFormatter(editor: Editor) extends EditorFormatter(editor) {
     if (s.isEmpty)
       sb.append(NbSp)
     else
-      Escaping.escape(s.replace(' ', NbSp), sb)
+      sb.append(Html.escapeText(s.replace(' ', NbSp)))
   }
 }
 

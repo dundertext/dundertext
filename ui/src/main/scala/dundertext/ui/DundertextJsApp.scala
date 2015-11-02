@@ -14,7 +14,7 @@ object DundertextJsApp extends JSApp {
   def main(): Unit = {
     println("Starting Dundertext")
 
-    dom.document.body.innerHTML = MainLayout.page.render
+    dom.document.body.innerHTML = MainLayout.page
 
     val videosPanel = new VideosPanel(dom.document.querySelector("#videos tr").asInstanceOf[html.TableRow])
     val keyboard = new GlobalKeyboardHandler

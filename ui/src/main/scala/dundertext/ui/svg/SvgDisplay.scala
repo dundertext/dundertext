@@ -1,12 +1,10 @@
 package dundertext.ui.svg
 
-import dundertext.editor.{TextNode, Cursor}
+import dundertext.editor.{Cursor, TextNode}
 import dundertext.ui.editor.EditorHtmlFormatter
-
-import scalatags.Text.short._
-import scalatags.Text.svgAttrs._
-import scalatags.Text.svgTags._
+import dundertext.ui.util.Html
 import org.scalajs.dom.svg
+
 import scala.collection.mutable
 
 class SvgDisplay(e: org.scalajs.dom.svg.Element) {
@@ -24,12 +22,14 @@ class SvgDisplay(e: org.scalajs.dom.svg.Element) {
       else
         rowText.replace(' ', EditorHtmlFormatter.NbSp)
 
-      g(
-        rect(fill:="#000000", fillOpacity:="0.5"),
-        text(x:="25%", y:="95%", fontFamily:="Verdana", fontSize:="40",
-             fontWeight:="bold", stroke:="black", fill:="white", strokeWidth:="0.6", txt),
-        line(id:="cursor", stroke:="yellow", strokeWidth:="3")
-      ).render
+      "<g>" +
+        "<rect fill='#000000' fill-opacity='0.5'></rect>" +
+        "<text x='25%' y='95%' font-family='Verdana' font-size='40' font-weight='bold' " +
+              "stroke='black' fill='white' stroke-width='0.6'>" +
+          Html.escapeText(txt) +
+        "</text>" +
+        "<line id='cursor' stroke='yellow' stroke-width='3'></line>" +
+      "</g>"
     }
 
     val sb = new StringBuilder
