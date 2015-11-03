@@ -10,11 +10,10 @@ object Cue {
 
   class Prev extends SubtitlingCommand {
     override def execute() = {
-      val current = cursor.text.prevTime
-      val prevTime: TimingNode = current.prevTime
-      editor.player.cue(prevTime.time)
-      val text: TextNode = prevTime.nextText
-      cursor.moveTo(text)
+      val t = editor.player.currentTime
+      val prev = editor.buffer.findNodeBeore(t)
+      editor.player.cue(prev.time)
+      editor.placeCursorAtVideo()
     }
   }
 
@@ -24,10 +23,10 @@ object Cue {
 
   class Next extends SubtitlingCommand {
     override def execute() = {
-      val nextTime = cursor.text.nextTime
-      editor.player.cue(nextTime.time)
-      val text: TextNode = nextTime.nextText
-      cursor.moveTo(text)
+      val t = editor.player.currentTime
+      val next = editor.buffer.findNodeAfter(t)
+      editor.player.cue(next.time)
+      editor.placeCursorAtVideo()
     }
   }
 

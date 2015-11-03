@@ -78,6 +78,15 @@ class DocumentBuffer private () {
   def isEmpty: Boolean =
     entries.length == 2
 
+  def findNodeBeore(time: Time): TimingNode = {
+    @tailrec def findBefore(n: DocumentNode): TimingNode = n match {
+      case null => null
+      case tn: TimingNode if tn.time.isBefore(time) => tn
+      case _ => findBefore(n.prev)
+    }
+    findBefore(entries.last)
+  }
+
   def findNodeAfter(time: Time): TimingNode = {
     @tailrec def findAfter(n: DocumentNode): TimingNode = n match {
       case null => null
