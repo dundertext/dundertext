@@ -31,9 +31,9 @@ class TimelinePanel(e: html.Canvas, player: VideoPlayer, editor: Editor) {
     // text
     for (e <- tm.es) {
       ctx.fillStyle = "#005500"
-      ctx.fillRect(e.x, 18, e.w, 14)
+      ctx.fillRect(e.x, 37, e.w, 14)
       ctx.fillStyle = "#AAA"
-      ctx.fillText(e.dt.text.text, e.x + 3, 28, e.w)
+      ctx.fillText(e.dt.text.text, e.x + 4, 48, e.w)
     }
 
     // cursor
