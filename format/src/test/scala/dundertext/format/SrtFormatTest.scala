@@ -32,7 +32,7 @@ class SrtFormatTest  {
 
     // then
     assertEquals("0:05.4", doc.entries(0).asInstanceOf[Timing].value.formatShort)
-    assertEquals("This is a srt subtitle", doc.entries(1).asInstanceOf[Text].text)
+    assertEquals("This is a srt subtitle\n", doc.entries(1).asInstanceOf[Text].text)
     assertEquals("0:10.1", doc.entries(2).asInstanceOf[Timing].value.formatShort)
   }
 
@@ -54,7 +54,7 @@ class SrtFormatTest  {
 
     // then
     assertEquals("0:11.0", doc.entries(3).asInstanceOf[Timing].value.formatShort)
-    assertEquals("This is another srt subtitle", doc.entries(4).asInstanceOf[Text].text)
+    assertEquals("This is another srt subtitle\n", doc.entries(4).asInstanceOf[Text].text)
     assertEquals("0:15.0", doc.entries(5).asInstanceOf[Timing].value.formatShort)
   }
 

@@ -1,15 +1,15 @@
 package dundertext.ui.editor
 
-import dundertext.editor.cmd._
 import dundertext.editor._
-import dundertext.ui.keyboard.{KeyCodes, KeyChord, Keyboard, KeyboardListener}
+import dundertext.editor.cmd.VideoPlayerCommand._
+import dundertext.editor.cmd._
+import dundertext.ui.keyboard.{KeyChord, KeyCodes, Keyboard, KeyboardListener}
 import dundertext.ui.svg.SvgDisplay
-import VideoPlayerCommand._
-import dundertext.ui.sync.Sync
 import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
 import org.scalajs.dom.raw.Selection
+
 import scala.collection.breakOut
 
 class EditorPresenter(

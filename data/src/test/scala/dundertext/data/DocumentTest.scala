@@ -6,7 +6,7 @@ import org.junit.Assert._
 class DocumentTest {
 
   def formatDisplayed(d: DisplayedText): String = {
-    s"${d.in.formatShort} (${d.length.millis}) ${d.text.text}"
+    s"${d.in.formatShort} (${d.length.millis}) ${d.text.text.trim}"
   }
 
   @Test

@@ -10,21 +10,29 @@ class MasterDocument {
 
   val buffer = DocumentBuffer.empty
 
-  def handle(patch: DocumentPatch): Unit = patch match {
-    case p: TextPatch      => applyText(p)
-    case p: AddTextPatch   => p.apply(buffer)
-    case p: AddTimingPatch => p.apply(buffer)
+  def handle(patches: Seq[DocumentPatch]): Seq[DocumentPatch] = {
+    for (p <- patches) yield handle(p)
   }
 
-  def applyText(p: TextPatch): Unit = {
+  private[server] def handle(patch: DocumentPatch): DocumentPatch = patch match {
+    case p: TextPatch      => applyText(p)
+    case p: AddTextPatch   => p.apply(buffer); p
+    case p: AddTimingPatch => p.apply(buffer); p
+  }
+
+  private def applyText(p: TextPatch): DocumentPatch = {
     try {
-      p.apply(buffer) }
-    catch { case e: TextPatchException =>
-      transform(p, e.current).apply(buffer)
+      p.apply(buffer)
+      p
+    } catch { case e: TextPatchException =>
+      println(e)
+      val p2 = transform(p, e.current)
+      p2.apply(buffer)
+      p2
     }
   }
 
-  def transform(p: TextPatch, current: String): TextPatch = {
+  private def transform(p: TextPatch, current: String): TextPatch = {
     val remote: LinkedList[Patch] = new DiffMatchPatch().patch_make(p.old, p.now)
     val Array(patched: String, applied: Array[Boolean]) = new DiffMatchPatch().patch_apply(remote, current)
     p.copy(old = current, now = patched)

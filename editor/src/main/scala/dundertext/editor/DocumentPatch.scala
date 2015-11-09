@@ -31,9 +31,9 @@ case class TextPatch (
 
   def apply(buffer: DocumentBuffer): Unit = {
     val tn: TextNode = buffer.getTextNodeById(id)
-    val current: String = tn.text.trim
+    val current: String = tn.text
     if (current != old)
-      throw new TextPatchException(s"Unable to apply Patch. old: $old current: $current", current)
+      throw new TextPatchException(s"Unable to apply Patch. old: '$old' current: '$current'", current)
     tn.rows.clear()
     for (rs <- now.split('\n'))
       tn.rows += RowNode.from(rs)
