@@ -2,21 +2,21 @@ organization            := "dundertext"
 name                    := "Dundertext"
 version in ThisBuild    := "1.0-SNAPSHOT"
 
-scalaVersion in ThisBuild := "2.11.8"
+scalaVersion in ThisBuild := "2.12.0"
 crossPaths in ThisBuild   := false
 
 incOptions := incOptions.value.withNameHashing(true)
 testOptions in ThisBuild += Tests.Argument(TestFrameworks.JUnit, "+q", "-v")
 scalacOptions in ThisBuild ++= Seq(
-  "-Xlint",
-  "-unchecked",
-  "-deprecation",
   "-target:jvm-1.8",
   "-encoding", "utf-8",
+  "-deprecation",
+  "-unchecked",
   "-feature",
-  "-optimise",
+  "-opt:l:classpath",
+  "-Xlint",
   "-Xfuture",
-  "-Yinline-warnings"
+  "-Ywarn-unused-import"
 )
 libraryDependencies in ThisBuild += "com.novocode" % "junit-interface" % "0.11" % "test"
 
@@ -40,8 +40,8 @@ lazy val `ui`     = project
 lazy val `server` = project
                       .dependsOn(`editor`, `format`)
                       .settings(
-                        libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.12",
-                        libraryDependencies += "com.typesafe.akka" %% "akka-http-core" % "2.4.11",
+                        libraryDependencies += "com.typesafe.akka" % "akka-actor_2.12.0-RC2" % "2.4.12",
+                        libraryDependencies += "com.typesafe.akka" % "akka-http-core_2.12.0-RC2" % "2.4.11",
                         libraryDependencies += "com.sksamuel.diff" % "diff" % "1.1.11",
 
                         createLauncher := {
