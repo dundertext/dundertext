@@ -7,6 +7,8 @@ final case class Document (
 )
 
 object Document {
+  val empty = forEntries(List(Timing("START", Time.Start), Timing("END", Time.End)))
+
   def forEntries(entries: List[Entry]): Document = {
     val b = List.newBuilder[DisplayedText]
     var in: Time = Time.Start

@@ -1,9 +1,9 @@
 package dundertext.editor
 
 import dundertext.data.Time
-import dundertext.editor.cmd.{CommandTestBase, NewTextAtVideo}
-import org.junit.Test
+import dundertext.editor.cmd.CommandTestBase
 import org.junit.Assert._
+import org.junit.Test
 
 class EditorTest extends CommandTestBase {
 

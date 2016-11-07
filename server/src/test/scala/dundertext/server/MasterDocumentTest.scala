@@ -9,19 +9,18 @@ class MasterDocumentTest {
 
   @Test
   def should_start_empty(): Unit = {
-    val d = new MasterDocument
-    assertTrue(d.buffer.isEmpty)
+    val d = new MasterDocument()
+    assertTrue(d.document.isEmpty)
   }
 
   @Test
   def should_handle_single_user_on_empty_document(): Unit = {
-    val d = new MasterDocument
-    d.handle(AddTimingPatch("1", "START", Time(5200)))
-    d.handle(AddTextPatch("2", "1"))
-    d.handle(TextPatch("2", "\n", "I\n"))
-    d.handle(TextPatch("2", "I\n", "I am testing\n"))
+    val d = new MasterDocument()
+    d.handle(TimingPatch("1", "START", Time(5200)))
+    d.handle(TextPatch("editor1", "2", "1", "\n", "I\n"))
+    d.handle(TextPatch("editor1", "2", "1", "I\n", "I am testing\n"))
 
-    val doc: Document = d.buffer.build()
+    val doc: Document = d.document.build
     assertEquals(4, doc.entries.size)
     assertEquals(5200, doc.entries(1).asInstanceOf[Timing].value.millis)
     assertEquals("I am testing\n", doc.entries(2).asInstanceOf[Text].text)
@@ -30,22 +29,21 @@ class MasterDocumentTest {
   @Test
   def should_diff_match_patch_when_conflicting_changed_by_other(): Unit = {
     // given
-    val d = new MasterDocument
-    d.handle(AddTextPatch("1", "START"))
-    d.handle(TextPatch("1", "\n", "Green apples\n"))
-    var doc: Document = d.buffer.build()
+    val d = new MasterDocument()
+    d.handle(TextPatch("editor1", "1", "START", "\n", "Green apples\n"))
+    var doc: Document = d.document.build
     assertEquals(3, doc.entries.size)
     assertEquals("Green apples\n", doc.entries(1).asInstanceOf[Text].text)
 
     // and changed by other (green -> red)
-    val tn: TextNode = d.buffer.getTextNodeById("1")
-    tn.firstRow.set(Row.of("Red apples"))
+    val (idx, _) = d.document.getOrCreateText("1", "START")
+    d.document.entries.update(idx, Text("1", List(Row.of("Red apples"))))
 
     // when I change fruit
-    d.handle(TextPatch("1", "Green apples\n", "Green oranges\n"))
+    d.handle(TextPatch("editor1", "1", "START", "Green apples\n", "Green oranges\n"))
 
     // then the result is changed fruit and changed color
-    doc = d.buffer.build()
+    doc = d.document.build
     assertEquals("Red oranges\n", doc.entries(1).asInstanceOf[Text].text)
   }
 }

@@ -1,6 +1,6 @@
 package dundertext.editor.cmd
 
-import dundertext.data.{Span, Row}
+import dundertext.data.Row
 import dundertext.editor.RowNode
 
 object SplitRow extends CommandDescription {

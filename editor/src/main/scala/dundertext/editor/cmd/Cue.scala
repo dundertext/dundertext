@@ -1,7 +1,5 @@
 package dundertext.editor.cmd
 
-import dundertext.editor.{TextNode, TimingNode}
-
 object Cue {
 
   object Prev extends CommandDescription {

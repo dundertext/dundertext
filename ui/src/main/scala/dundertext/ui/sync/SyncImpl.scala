@@ -12,7 +12,7 @@ class SyncImpl extends Sync {
   var activeRequest: Future[XMLHttpRequest] = _
 
   // init
-  js.timers.setInterval(500)(timedSync _)
+  js.timers.setInterval(500)(sync _)
   // end-init
 
   override def sendPatches(patches: List[DocumentPatch]): Unit = {

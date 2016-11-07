@@ -30,8 +30,6 @@ class Editor private() {
 
   private def doExecute(cmd: SubtitlingCommand): Unit = {
     cmd.execute()
-    if (cursor.isAtText)
-      cursor.text.synced = false
     if (cmd.relinks)
       buffer.relink()
   }

@@ -12,6 +12,14 @@ class TextNode private() extends DocumentNode {
 
   var display: DisplayedText = _
 
+  var synced: Text = _
+
+  def sync(): (Text, Text) = {
+    val before = synced
+    synced = build()
+    (before, synced)
+  }
+
   def firstRow: RowNode = rows.head
   def lastRow: RowNode = rows.last
 
@@ -42,7 +50,7 @@ class TextNode private() extends DocumentNode {
       count += 1
       r.parent = this
       r.nr = count
-      if (prev ne null)
+      if (prev != null)
         prev.next = r
       r.prev = prev
       prev = r
@@ -79,6 +87,13 @@ class TextNode private() extends DocumentNode {
 }
 
 object TextNode {
+  def from(text: Text) = {
+    val tn = new TextNode()
+    text.rows foreach { tn.rows += RowNode.from(_) }
+    tn.relink()
+    tn
+  }
+
   def empty = {
     val n = new TextNode
     n.append("")

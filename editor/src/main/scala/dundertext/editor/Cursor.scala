@@ -22,7 +22,7 @@ class Cursor {
     pos == row.length
 
   def isAtText: Boolean =
-    text ne null
+    text != null
 
   def isAt(node: TextNode): Boolean = {
     isAtText && text == node

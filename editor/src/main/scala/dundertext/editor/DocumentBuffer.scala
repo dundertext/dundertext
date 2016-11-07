@@ -1,6 +1,6 @@
 package dundertext.editor
 
-import dundertext.data.{Entry, Document, Time}
+import dundertext.data._
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -52,7 +52,7 @@ class DocumentBuffer private () {
   def relink(): Unit = {
     var prev: DocumentNode = null
     for (e <- entries) {
-      if (prev ne null)
+      if (prev != null)
         prev.next = e
       e.prev = prev
       prev = e
@@ -116,6 +116,37 @@ class DocumentBuffer private () {
     Document.forEntries(b.result())
   }
 
+  def getOrCreateTextNode(id: String, prevId: String): TextNode = {
+    val idx: Int = entries.indexWhere(_.id == id)
+    if (idx > 0) {
+      entries(idx).asInstanceOf[TextNode]
+    } else {
+      val prevIdx = entries.indexWhere(_.id == prevId)
+      val newEntry = TextNode.from(Text(id, List(Row.of(""))))
+      entries.insert(prevIdx+1, newEntry)
+      newEntry
+    }
+  }
+
+  def getOrCreateTiming(id: String, prevId: String): TimingNode = {
+    val idx: Int = entries.indexWhere(_.id == id)
+    if (idx > 0) {
+      entries(idx).asInstanceOf[TimingNode]
+    } else {
+      val prevIdx = entries.indexWhere(_.id == prevId)
+      val newEntry = TimingNode(Timing(id, Time.Start))
+      entries.insert(prevIdx+1, newEntry)
+      newEntry
+    }
+  }
+
+  def deleteNode(id: String): Unit = {
+    val idx: Int = entries.indexWhere(_.id == id)
+    if (idx > 0) {
+      entries.remove(idx)
+    }
+  }
+
   override def toString = asText
 }
 
@@ -130,6 +161,10 @@ object DocumentBuffer {
   def empty = {
     val b = new DocumentBuffer
     b.relink()
+    b.entries foreach {
+      case tnn: TextNode => tnn.sync()
+      case tnn: TimingNode => tnn.sync()
+    }
     b
   }
 }

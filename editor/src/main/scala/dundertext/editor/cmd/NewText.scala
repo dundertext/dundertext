@@ -8,7 +8,7 @@ object NewText extends CommandDescription {
 
 class NewText extends SubtitlingCommand {
   override def execute(): Unit = {
-    val t = TextNode.empty
+    val t = TextNode.empty.withId(editor.newId())
     buffer.append(t)
     cursor.moveTo(t)
   }

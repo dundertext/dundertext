@@ -3,8 +3,7 @@ package dundertext.editor
 import dundertext.data.Time
 import DocumentPatch._
 
-trait DocumentPatch {
-  def apply(buffer: DocumentBuffer): Unit
+sealed trait DocumentPatch {
   def serialize: String
 }
 
@@ -13,63 +12,45 @@ object DocumentPatch {
 
   def unserialize(s: String): DocumentPatch = {
     s.split('\t') match {
-      case Array("T", id, source, target) => TextPatch(id, source.replace(US, '\n'), target.replace(US, '\n'))
-      case Array("ATX", id, afterId) => AddTextPatch(id, afterId)
-      case Array("ATM", id, afterId, t) => AddTimingPatch(id, afterId, Time(t.toInt))
-      case Array("R", id) => RemovePatch(id)
+      case Array("TX", syncId, id, prevId, source, target) =>
+        TextPatch(syncId = syncId, id = id, prevId = prevId, source = source.replace(US, '\n'),
+                  target = target.replace(US, '\n'))
+
+      case Array("TM", id, prevId, t) =>
+        TimingPatch(id = id, prevId = prevId, t = Time(t.toInt))
+
+      case Array("R", id) =>
+        RemovePatch(id)
     }
   }
 }
 
-class TextPatchException(msg: String, val current: String) extends Exception(msg)
 
 case class TextPatch (
+  syncId: String,
   id: String,
-  old: String,
-  now: String
+  prevId: String,
+  source: String,
+  target: String
 ) extends DocumentPatch {
 
-  def apply(buffer: DocumentBuffer): Unit = {
-    val tn: TextNode = buffer.getTextNodeById(id)
-    val current: String = tn.text
-    if (current != old)
-      throw new TextPatchException(s"Unable to apply Patch. old: '$old' current: '$current'", current)
-    tn.rows.clear()
-    for (rs <- now.split('\n'))
-      tn.rows += RowNode.from(rs)
-    tn.relink()
-  }
-
-  override def serialize: String = Array("T", id, old.replace('\n', US), now.replace('\n', US)).mkString("\t")
+  override def serialize: String = Array(
+    "TX",
+    syncId,
+    id,
+    prevId,
+    source.replace('\n', US),
+    target.replace('\n', US)
+  ).mkString("\t")
 }
 
-case class AddTextPatch (
+case class TimingPatch (
   id: String,
-  afterId: String
-) extends DocumentPatch {
-
-  def apply(buffer: DocumentBuffer): Unit = {
-    val insertPos: DocumentNode = buffer.getNodeById(afterId)
-    val t = TextNode.empty.withId(id)
-    buffer.insertAfter(t, insertPos)
-  }
-
-  override def serialize: String = Array("ATX", id, afterId).mkString("\t")
-}
-
-case class AddTimingPatch (
-  id: String,
-  afterId: String,
+  prevId: String,
   t: Time
 ) extends DocumentPatch {
 
-  def apply(buffer: DocumentBuffer): Unit = {
-    val insertPos: DocumentNode = buffer.getNodeById(afterId)
-    val tn = TimingNode(t).withId(id)
-    buffer.insertAfter(tn, insertPos)
-  }
-
-  override def serialize: String = Array("ATM", id, afterId, t.millis.toString).mkString("\t")
+  override def serialize: String = Array("TM", id, prevId, t.millis.toString).mkString("\t")
 }
 
 case class RemovePatch (

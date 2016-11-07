@@ -1,60 +1,92 @@
 package dundertext.editor
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable
 
 abstract class Sync {
-  val syncedBuffer = DocumentBuffer.empty
   var editor: Editor = _
-  var active = ListBuffer[DocumentPatch]()
+
+  var idCounter: Int = 0
+
+  val ownChanges = mutable.Buffer[DocumentPatch]()
 
   def setEditor(editor: Editor): Unit = {
     this.editor = editor
   }
 
-  def timedSync(): Unit = {
-    if (active.nonEmpty) {
-      println ("No sync, pending req")
-      return
-    }
+  def newSyncId(): Int = {
+    idCounter += 1
+    idCounter
+  }
 
+  def sync(): Unit = {
+    val syncId = "editor"+newSyncId()
     for (n: DocumentNode <- editor.buffer.entries) {
-      if (!n.synced) {
-        val oldO = syncedBuffer.findNodeById(n.id)
-        n match {
-          case txn: TextNode   => syncText(txn, oldO.asInstanceOf[Option[TextNode]])
-          case tmn: TimingNode => syncTime(tmn, oldO.asInstanceOf[Option[TimingNode]])
-        }
+      n match {
+        case txn: TextNode   => syncText(txn, syncId)
+        case tmn: TimingNode => syncTime(tmn, syncId)
       }
-      n.synced = true
     }
 
-    if (active.nonEmpty)
-      sendPatches(active.toList)
-  }
-
-  private def syncText(now: TextNode, oldO: Option[TextNode]): Unit = {
-    oldO match {
-      case Some(old)  => sync(TextPatch(now.id, old.text, now.text))
-      case None       => sync(AddTextPatch(now.id, now.prev.id))
-                         sync(TextPatch(now.id, "\n", now.text))
+    if (ownChanges.nonEmpty) {
+      sendPatches(ownChanges.toList)
+      ownChanges.clear()
     }
   }
 
-  private def syncTime(now: TimingNode, oldO: Option[TimingNode]): Unit = {
-    oldO match {
-      case Some(old)  =>
-      case None       => sync(AddTimingPatch(now.id, now.prev.id, now.time))
+  private def syncText(txn: TextNode, syncId: String): Unit = {
+    val (old, now) = txn.sync()
+    if (old == null) {
+      sync(TextPatch(syncId, txn.id, txn.prev.id, "\n", now.text))
+      txn.pendingSyncId = syncId
+    } else if (old != now) {
+      sync(TextPatch(syncId, txn.id, txn.prev.id, old.text, now.text))
+      txn.pendingSyncId = syncId
     }
   }
 
-  def sync(patch: DocumentPatch): Unit = {
-    active += patch
+  private def syncTime(tmn: TimingNode, syncId: String): Unit = {
+    val (old, now) = tmn.sync()
+    if ((old == null) || old != now) {
+      sync(TimingPatch(tmn.id, tmn.prev.id, tmn.time))
+    }
+  }
+
+  private def sync(patch: DocumentPatch): Unit = {
+    ownChanges += patch
   }
 
   def sendPatches(patches: List[DocumentPatch]): Unit
 
   def receivePatches(patches: Seq[DocumentPatch]): Unit = {
-    for (p <- patches) p.apply(syncedBuffer)
-    active.clear()
+    sync()
+    for (p <- patches) {
+      apply(p, editor.buffer)
+    }
+  }
+
+  private def apply(p: DocumentPatch, b: DocumentBuffer): Unit = p match {
+    case p: TextPatch   => applyText(p, b)
+    case p: TimingPatch => applyTiming(p, b)
+    case p: RemovePatch => applyRemoval(p, b)
+  }
+
+  private def applyText(p: TextPatch, b: DocumentBuffer): Unit = {
+    val tn: TextNode = b.getOrCreateTextNode(p.id, p.prevId)
+    if (tn.pendingSyncId == null || tn.pendingSyncId == p.syncId) {
+      tn.pendingSyncId = null
+      tn.rows.clear()
+      for (rs <- p.target.split('\n'))
+        tn.rows += RowNode.from(rs)
+      tn.relink()
+    }
+  }
+
+  private def applyTiming(p: TimingPatch, b: DocumentBuffer): Unit = {
+    val n = b.getOrCreateTiming(p.id, p.prevId)
+    n.time = p.t
+  }
+
+  private def applyRemoval(p: RemovePatch, b: DocumentBuffer): Unit = {
+    b.deleteNode(p.id)
   }
 }

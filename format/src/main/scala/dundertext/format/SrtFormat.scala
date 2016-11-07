@@ -83,14 +83,14 @@ object Srt {
     var text = ListBuffer[String]()
 
     def isComplete: Boolean =
-      (tc ne null) && text.nonEmpty
+      (tc != null) && text.nonEmpty
 
     def tcIn: String = tc.substring(0,12)
     def tcOut: String = tc.substring(17,29)
 
     def parse(row: String): Unit = {
-      if (number eq null) number = row
-      else if (tc eq null) tc = row
+      if (number == null) number = row
+      else if (tc == null) tc = row
       else text += row
     }
 

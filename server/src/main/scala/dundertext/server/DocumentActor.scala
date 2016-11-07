@@ -21,9 +21,9 @@ trait DocumentActorState {
   protected def patch(patches: Seq[DocumentPatch]): Unit = {
     println (patches.mkString("\n"))
     doc.handle(patches)
-    store.put(doc.buffer.build().copy(id = "TEST"))
+    //store.put(doc.buffer.build().copy(id = "TEST"))
     store.log("TEST", patches)
-    println (doc.buffer)
+    //println (doc.buffer)
   }
 }
 

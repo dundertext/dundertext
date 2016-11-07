@@ -3,19 +3,18 @@ package dundertext.editor
 import org.junit.Test
 import org.junit.Assert._
 
-
 class DocumentPatchTest {
 
   @Test
   def should_serialize(): Unit = {
-    val p = TextPatch("A", "", "Hej")
-    assertEquals("T\tA\t\tHej", p.serialize)
+    val p = TextPatch("A", "START", "END", "Hoj", "Hej")
+    assertEquals("TX\tA\tSTART\tEND\tHoj\tHej", p.serialize)
   }
 
   @Test
   def should_unserialize(): Unit = {
-    val s = "T\tA\t\tHej"
+    val s = "TX\tA\tSTART\tEND\tHoj\tHej"
     val p = DocumentPatch.unserialize(s)
-    assertEquals(TextPatch("A", "", "Hej"), p)
+    assertEquals(TextPatch("A", "START", "END", "Hoj", "Hej"), p)
   }
 }
