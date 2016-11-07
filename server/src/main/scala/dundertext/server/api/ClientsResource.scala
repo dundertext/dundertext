@@ -7,31 +7,36 @@ import dundertext.server.AppContext
 
 import scala.concurrent.{ExecutionContext, Future}
 
-/** /api/ */
-class ApiResource(req: HttpRequest, subPath: Uri.Path)(
+/** /api/clients/ */
+class ClientsResource(req: HttpRequest, subPath: Uri.Path)(
     implicit val ctx: AppContext,
     implicit val materializer: ActorMaterializer,
     implicit val ec: ExecutionContext
 ) extends Resource {
 
   def route: Future[HttpResponse] = subPath match {
-    case Segment("document", Slash(tail)) => new DocumentsResource(req, tail).route
-    case Segment("clients", Slash(tail)) => new ClientsResource(req, tail).route
     case Empty => handle
     case _ => notFound
   }
 
   def handle: Future[HttpResponse] = req.method match {
-    case HttpMethods.GET => get
-    case _               => methodNotAllowed
+    case HttpMethods.GET  => get
+    case HttpMethods.POST => post
+    case _                => methodNotAllowed
   }
 
   def get = {
     def entity = HttpEntity.apply(ContentTypes.`text/xml(UTF-8)`,
-      """<app>
-        |  <name>Dundertext API</name>
-        |</app>
+      s"""<clients>
+        |Här borde man se klienterna
+        |</clients>
         |""".stripMargin)
     Future.successful(HttpResponse(StatusCodes.OK, entity = entity))
+  }
+
+  def post = {
+    val userAgent: String = req.header[headers.`User-Agent`].mkString
+    println("Client started using " + userAgent)
+    Future.successful(HttpResponse(StatusCodes.OK))
   }
 }

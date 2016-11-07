@@ -27,7 +27,7 @@ class DocumentResource(req: HttpRequest, docId: String, subPath: Uri.Path)(
   }
 
   def get = {
-    def entity = HttpEntity.apply(ContentType(MediaTypes.`application/xml`),
+    def entity = HttpEntity.apply(ContentTypes.`text/xml(UTF-8)`,
       s"""<document>
          |  $docId
          |</document>

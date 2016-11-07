@@ -6,6 +6,7 @@ import dundertext.ui.sync.SyncImpl
 import dundertext.ui.timeline.TimelinePanel
 import dundertext.ui.video.{VideoPlayerPresenter, VideosPanel}
 import org.scalajs.dom
+import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.html
 
 import scala.scalajs.js.JSApp
@@ -26,5 +27,7 @@ object DundertextJsApp extends JSApp {
 
     new TimelinePanel(dom.document.querySelector("#timelines canvas").asInstanceOf[html.Canvas],
       videosPanel.left.player, editorPresenter.editor)
+
+    Ajax.post("/api/clients/", "Connecting")
   }
 }

@@ -7,8 +7,9 @@ Build
 -----
 
 ```bash
-sbt fullOptJS
-nginx -c `pwd`/nginx.conf 
+sbt "; fullOptJS; createLauncher"
+nginx -c `pwd`/nginx.conf
+./run.sh
 chrome http://localhost:8000
 ```
 

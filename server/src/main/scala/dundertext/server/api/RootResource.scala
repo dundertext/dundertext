@@ -26,7 +26,7 @@ class RootResource(req: HttpRequest)(
   }
 
   def get = {
-    def entity = HttpEntity.apply(ContentType(MediaTypes.`application/xml`), """<app><name>Dundertext</name></app>""")
+    def entity = HttpEntity.apply(ContentTypes.`text/xml(UTF-8)`, """<app><name>Dundertext</name></app>""")
     Future.successful(HttpResponse(StatusCodes.OK, entity = entity))
   }
 }

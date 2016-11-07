@@ -9,6 +9,7 @@ import org.scalajs.dom
 import org.scalajs.dom.ext.KeyCode
 import org.scalajs.dom.html
 import org.scalajs.dom.raw.Selection
+import scala.scalajs.js
 
 import scala.collection.breakOut
 
@@ -25,7 +26,7 @@ class EditorPresenter(
   val editor = Editor(DocumentBuffer.empty)
   editor.player = player
   panel.display("")
-  dom.setInterval(redrawVideo _, 100)
+  js.timers.setInterval(100)(redrawVideo _)
   sync.setEditor(editor)
   // end init
 

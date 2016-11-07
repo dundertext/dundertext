@@ -43,7 +43,7 @@ class TimelinePanel(e: html.Canvas, player: VideoPlayer, editor: Editor) {
   }
 
   private def requestFrame(): Unit = {
-    org.scalajs.dom.requestAnimationFrame(onAnimationFrame _)
+    org.scalajs.dom.window.requestAnimationFrame(onAnimationFrame _)
   }
 
   def calcDisplayed(): List[DisplayedText] = {
